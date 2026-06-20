@@ -1,0 +1,9 @@
+streamlit
+requests
+spacy
+hunspell
+scikit-learn
+sentence-transformers
+numpy
+huggingface_hub
+python-dotenv
