@@ -53,7 +53,7 @@ def cargar_entorno_rag():
         st.error("ERROR: no se ha detectado el token de Hugging Face en el entorno (.env).")
         st.stop()
 
-    modelo_id = "meta-llama/Meta-Llama-3.1-8B-Instruct"
+    modelo_id = "Qwen/Qwen2.5-7B-Instruct"
     llm_generador = InferenceClient(model=modelo_id, token=hf_token)
 
     return (vocabulario_oficial, corpus_textos, modelo_tfidf, matriz_tfidf_corpus,

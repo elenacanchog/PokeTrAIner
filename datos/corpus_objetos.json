@@ -1,0 +1,838 @@
+{
+    "diamansfera": {
+        "descripcion": "Una esfera brillante que potencia los movimientos de tipo Acero y Dragón. Debe llevarla Dialga.",
+        "nombre_ingles": "adamant-orb"
+    },
+    "lustresfera": {
+        "descripcion": "Una bonita esfera que potencia los movimientos de tipo Dragón y Agua. Debe llevarla Palkia.",
+        "nombre_ingles": "lustrous-orb"
+    },
+    "polvo brillo": {
+        "descripcion": "Lanza un destello que baja la Precisión del enemigo. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "bright-powder"
+    },
+    "hierba blanca": {
+        "descripcion": "Restaura cualquier característica reducida en combate. Solo se puede usar una vez. Debe llevarla un Pokémon.",
+        "nombre_ingles": "white-herb"
+    },
+    "garra rápida": {
+        "descripcion": "Garra ligera y afilada que permite que el Pokémon que la lleve ataque a veces el primero.",
+        "nombre_ingles": "quick-claw"
+    },
+    "hierba mental": {
+        "descripcion": "El Pokémon que la lleva se libera del efecto de movimientos que restringen sus acciones. Solo puede usarse una vez.",
+        "nombre_ingles": "mental-herb"
+    },
+    "cinta elección": {
+        "descripcion": "Aumenta la potencia de los ataques físicos del Pokémon que la lleva, pero solo le permite usar un movimiento.",
+        "nombre_ingles": "choice-band"
+    },
+    "roca del rey": {
+        "descripcion": "El Pokémon que la lleva puede amedrentar al Pokémon al que le inflige daño.",
+        "nombre_ingles": "kings-rock"
+    },
+    "polvo plata": {
+        "descripcion": "Polvo de brillo argénteo que fortalece los ataques de tipo Bicho. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "silver-powder"
+    },
+    "rocío bondad": {
+        "descripcion": "Un orbe fantástico que debe llevar Latios o Latias. Potencia los movimientos de tipo Psíquico y Dragón.",
+        "nombre_ingles": "soul-dew"
+    },
+    "diente marino": {
+        "descripcion": "Tiene el brillo afilado de la plata y debe llevarlo Clamperl. Sube el Ataque Especial.",
+        "nombre_ingles": "deep-sea-tooth"
+    },
+    "escama marina": {
+        "descripcion": "Tiene un débil brillo rosado y debe llevarla Clamperl. Sube la Defensa Especial.",
+        "nombre_ingles": "deep-sea-scale"
+    },
+    "bola de humo": {
+        "descripcion": "Debe llevarla un Pokémon. Permite huir siempre de combates contra Pokémon salvajes.",
+        "nombre_ingles": "smoke-ball"
+    },
+    "cinta focus": {
+        "descripcion": "El Pokémon que la lleva puede resistir un golpe que potencialmente lo dejaría K. O. y se queda con 1 PS.",
+        "nombre_ingles": "focus-band"
+    },
+    "periscopio": {
+        "descripcion": "Su lente aumenta la probabilidad que tiene el Pokémon que lo lleva de conseguir un golpe crítico.",
+        "nombre_ingles": "scope-lens"
+    },
+    "revest. metálico": {
+        "descripcion": "Película metálica que fortalece los ataques de tipo Acero. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "metal-coat"
+    },
+    "restos": {
+        "descripcion": "Este objeto restaura gradualmente durante el combate los PS del Pokémon que lo lleva.",
+        "nombre_ingles": "leftovers"
+    },
+    "bola luminosa": {
+        "descripcion": "Asombrosa esfera que debe llevar Pikachu y que aumenta su Ataque y su Ataque Especial.",
+        "nombre_ingles": "light-ball"
+    },
+    "arena fina": {
+        "descripcion": "Debe llevarla un Pokémon. La suavidad de la arena fortalece los movimientos de tipo Tierra.",
+        "nombre_ingles": "soft-sand"
+    },
+    "piedra dura": {
+        "descripcion": "Debe llevarla un Pokémon. La robustez de la piedra fortalece los movimientos de tipo Roca.",
+        "nombre_ingles": "hard-stone"
+    },
+    "semilla milagro": {
+        "descripcion": "Debe llevarla un Pokémon. La vitalidad de la semilla fortalece los movimientos de tipo Planta.",
+        "nombre_ingles": "miracle-seed"
+    },
+    "gafas de sol": {
+        "descripcion": "Debe llevarlas un Pokémon. Fortalecen los movimientos de tipo Siniestro.",
+        "nombre_ingles": "black-glasses"
+    },
+    "cinturón negro": {
+        "descripcion": "Debe llevarlo un Pokémon. Aumenta la concentración y fortalece los movimientos de tipo Lucha.",
+        "nombre_ingles": "black-belt"
+    },
+    "imán": {
+        "descripcion": "Debe llevarlo un Pokémon. Su potente magnetismo fortalece los movimientos de tipo Eléctrico.",
+        "nombre_ingles": "magnet"
+    },
+    "agua mística": {
+        "descripcion": "Gema con forma de gota de agua que fortalece los movimientos de tipo Agua. Debe llevarla un Pokémon.",
+        "nombre_ingles": "mystic-water"
+    },
+    "pico afilado": {
+        "descripcion": "Pico largo y afilado que aumenta la potencia de los movimientos de tipo Volador. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "sharp-beak"
+    },
+    "flecha venenosa": {
+        "descripcion": "Flecha venenosa que refuerza los movimientos de tipo Veneno. Debe llevarla un Pokémon.",
+        "nombre_ingles": "poison-barb"
+    },
+    "antiderretir": {
+        "descripcion": "Fragmento de hielo que repele el calor y fortalece los movimientos de tipo Hielo. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "never-melt-ice"
+    },
+    "hechizo": {
+        "descripcion": "Misterioso y siniestro objeto que potencia los movimientos de tipo Fantasma. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "spell-tag"
+    },
+    "cuchara torcida": {
+        "descripcion": "Cuchara imbuida de energía telequinética que potencia los movimientos de tipo Psíquico. Debe llevarla un Pokémon.",
+        "nombre_ingles": "twisted-spoon"
+    },
+    "carbón": {
+        "descripcion": "Actúa como combustible y potencia los movimientos de tipo Fuego. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "charcoal"
+    },
+    "colmillo dragón": {
+        "descripcion": "Colmillo de gran dureza que refuerza los movimientos de tipo Dragón. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "dragon-fang"
+    },
+    "pañuelo de seda": {
+        "descripcion": "La delicadeza del pañuelo fortalece los movimientos de tipo Normal. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "silk-scarf"
+    },
+    "cascabel concha": {
+        "descripcion": "Debe llevarlo un Pokémon. Cada vez que este inflige daño, recupera algunos PS.",
+        "nombre_ingles": "shell-bell"
+    },
+    "incienso marino": {
+        "descripcion": "Tiene un curioso aroma que potencia los movimientos de tipo Agua. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "sea-incense"
+    },
+    "incienso suave": {
+        "descripcion": "Debe llevarlo un Pokémon. Su peculiar aroma reduce la Precisión del objetivo.",
+        "nombre_ingles": "lax-incense"
+    },
+    "puño suerte": {
+        "descripcion": "Un par de guantes que debe llevar Chansey. Potencian mucho su índice de golpe crítico.",
+        "nombre_ingles": "lucky-punch"
+    },
+    "polvo metálico": {
+        "descripcion": "Debe llevarlo Ditto. Es un polvo muy fino, pero a la vez poderoso, que aumenta su Defensa.",
+        "nombre_ingles": "metal-powder"
+    },
+    "hueso grueso": {
+        "descripcion": "Un extraño tipo de hueso que potencia los ataques físicos de Cubone y Marowak cuando lo llevan.",
+        "nombre_ingles": "thick-club"
+    },
+    "puerro": {
+        "descripcion": "Es un puerro muy largo que debe llevar Farfetch’d. Aumenta mucho la probabilidad de que logre un golpe crítico.",
+        "nombre_ingles": "stick"
+    },
+    "lupa": {
+        "descripcion": "Debe llevarla un Pokémon. Aumenta ligeramente la precisión de los movimientos.",
+        "nombre_ingles": "wide-lens"
+    },
+    "cinta fuerte": {
+        "descripcion": "Cinta del pelo que aumenta ligeramente la potencia de los ataques físicos. Debe llevarla un Pokémon.",
+        "nombre_ingles": "muscle-band"
+    },
+    "gafas especiales": {
+        "descripcion": "Potencian ligeramente los ataques especiales. Debe llevarlas un Pokémon.",
+        "nombre_ingles": "wise-glasses"
+    },
+    "cinta experto": {
+        "descripcion": "Potencia ligeramente los movimientos supereficaces. Debe llevarla un Pokémon.",
+        "nombre_ingles": "expert-belt"
+    },
+    "refleluz": {
+        "descripcion": "Prolonga la duración de barreras como las creadas por Reflejo y Pantalla de Luz. Debe llevarla un Pokémon.",
+        "nombre_ingles": "light-clay"
+    },
+    "vidasfera": {
+        "descripcion": "Potencia los movimientos, pero consume PS con cada ataque. Debe llevarla un Pokémon.",
+        "nombre_ingles": "life-orb"
+    },
+    "hierba única": {
+        "descripcion": "Permite el uso inmediato de cualquier movimiento en el primer turno. Es de un solo uso y debe llevarla un Pokémon.",
+        "nombre_ingles": "power-herb"
+    },
+    "toxisfera": {
+        "descripcion": "Extraña esfera que envenena gravemente al Pokémon que la lleva en combate.",
+        "nombre_ingles": "toxic-orb"
+    },
+    "llamasfera": {
+        "descripcion": "Extraña esfera que causa quemaduras al Pokémon que la lleva en combate.",
+        "nombre_ingles": "flame-orb"
+    },
+    "polvo veloz": {
+        "descripcion": "Debe llevarlo Ditto. Es un polvo muy fino, pero a la vez poderoso, que aumenta su Velocidad.",
+        "nombre_ingles": "quick-powder"
+    },
+    "banda focus": {
+        "descripcion": "Si el Pokémon que la lleva tiene los PS al máximo, puede resistir un golpe que lo dejaría K. O. y se queda con 1 PS.",
+        "nombre_ingles": "focus-sash"
+    },
+    "telescopio": {
+        "descripcion": "Debe llevarlo un Pokémon. Si se mueve después del enemigo, aumenta la Precisión del Pokémon.",
+        "nombre_ingles": "zoom-lens"
+    },
+    "metrónomo": {
+        "descripcion": "Potencia un movimiento que se use de forma consecutiva. Pero el efecto se pierde si se emplea otro movimiento.",
+        "nombre_ingles": "metronome"
+    },
+    "bola férrea": {
+        "descripcion": "Reduce la Velocidad. Los Pokémon que levitan y los de tipo Volador se tornan sensibles a movimientos de tipo Tierra.",
+        "nombre_ingles": "iron-ball"
+    },
+    "cola plúmbea": {
+        "descripcion": "Es muy pesada y hace que el Pokémon que la lleva se mueva más lento de lo normal.",
+        "nombre_ingles": "lagging-tail"
+    },
+    "lazo destino": {
+        "descripcion": "Un hilo largo y delgado de color rojo que transmite el enamoramiento del Pokémon que lo lleva a su objetivo.",
+        "nombre_ingles": "destiny-knot"
+    },
+    "lodo negro": {
+        "descripcion": "Si lo lleva un Pokémon de tipo Veneno, restaura gradualmente sus PS durante el combate. Si es de otro tipo, sus PS se reducirán.",
+        "nombre_ingles": "black-sludge"
+    },
+    "roca helada": {
+        "descripcion": "Prolonga la duración del movimiento Granizo que use el Pokémon que la lleva.",
+        "nombre_ingles": "icy-rock"
+    },
+    "roca suave": {
+        "descripcion": "Prolonga la duración del movimiento Tormenta de Arena que use el Pokémon que la lleva.",
+        "nombre_ingles": "smooth-rock"
+    },
+    "roca calor": {
+        "descripcion": "Prolonga la duración del movimiento Día Soleado que use el Pokémon que la lleva.",
+        "nombre_ingles": "heat-rock"
+    },
+    "roca lluvia": {
+        "descripcion": "Prolonga la duración del movimiento Danza Lluvia que use el Pokémon que la lleva.",
+        "nombre_ingles": "damp-rock"
+    },
+    "garra garfio": {
+        "descripcion": "Prolonga la duración de ataques multiturno como Atadura y Constricción si la lleva un Pokémon.",
+        "nombre_ingles": "grip-claw"
+    },
+    "pañuelo elección": {
+        "descripcion": "Debe llevarlo un Pokémon. Potencia la Velocidad, pero solo permite usar un movimiento.",
+        "nombre_ingles": "choice-scarf"
+    },
+    "toxiestrella": {
+        "descripcion": "Daña en cada turno al Pokémon que la lleva. Puede adherirse al Pokémon que alcance con su ataque al portador.",
+        "nombre_ingles": "sticky-barb"
+    },
+    "muda concha": {
+        "descripcion": "En combate, esta concha desechada permite que el portador siempre pueda cambiarse por otro Pokémon que no esté combatiendo.",
+        "nombre_ingles": "shed-shell"
+    },
+    "raíz grande": {
+        "descripcion": "El Pokémon que la lleva recupera más PS al usar movimientos que drenan al objetivo.",
+        "nombre_ingles": "big-root"
+    },
+    "gafas elección": {
+        "descripcion": "Aumentan la potencia de los ataques especiales del Pokémon que las lleva, pero solo le permiten usar un movimiento.",
+        "nombre_ingles": "choice-specs"
+    },
+    "tabla llama": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Fuego. Debe llevarla un Pokémon.",
+        "nombre_ingles": "flame-plate"
+    },
+    "tabla linfa": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Agua. Debe llevarla un Pokémon.",
+        "nombre_ingles": "splash-plate"
+    },
+    "tabla trueno": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Eléctrico. Debe llevarla un Pokémon.",
+        "nombre_ingles": "zap-plate"
+    },
+    "tabla pradal": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Planta. Debe llevarla un Pokémon.",
+        "nombre_ingles": "meadow-plate"
+    },
+    "tabla helada": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Hielo. Debe llevarla un Pokémon.",
+        "nombre_ingles": "icicle-plate"
+    },
+    "tabla fuerte": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Lucha. Debe llevarla un Pokémon.",
+        "nombre_ingles": "fist-plate"
+    },
+    "tabla tóxica": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Veneno. Debe llevarla un Pokémon.",
+        "nombre_ingles": "toxic-plate"
+    },
+    "tabla terrax": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Tierra. Debe llevarla un Pokémon.",
+        "nombre_ingles": "earth-plate"
+    },
+    "tabla cielo": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Volador. Debe llevarla un Pokémon.",
+        "nombre_ingles": "sky-plate"
+    },
+    "tabla mental": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Psíquico. Debe llevarla un Pokémon.",
+        "nombre_ingles": "mind-plate"
+    },
+    "tabla bicho": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Bicho. Debe llevarla un Pokémon.",
+        "nombre_ingles": "insect-plate"
+    },
+    "tabla pétrea": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Roca. Debe llevarla un Pokémon.",
+        "nombre_ingles": "stone-plate"
+    },
+    "tabla terror": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Fantasma. Debe llevarla un Pokémon.",
+        "nombre_ingles": "spooky-plate"
+    },
+    "tabla draco": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Dragón. Debe llevarla un Pokémon.",
+        "nombre_ingles": "draco-plate"
+    },
+    "tabla oscura": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Siniestro. Debe llevarla un Pokémon.",
+        "nombre_ingles": "dread-plate"
+    },
+    "tabla acero": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Acero. Debe llevarla un Pokémon.",
+        "nombre_ingles": "iron-plate"
+    },
+    "incienso raro": {
+        "descripcion": "Incienso de exótico aroma que fortalece los movimientos de tipo Psíquico. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "odd-incense"
+    },
+    "incienso roca": {
+        "descripcion": "Incienso de exótico aroma que fortalece los movimientos de tipo Roca. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "rock-incense"
+    },
+    "incienso lento": {
+        "descripcion": "Incienso de exótico aroma que hace que el Pokémon que lo lleve esté aturdido y se mueva más despacio.",
+        "nombre_ingles": "full-incense"
+    },
+    "incienso acua": {
+        "descripcion": "Tiene un curioso aroma que potencia los movimientos de tipo Agua. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "wave-incense"
+    },
+    "incienso floral": {
+        "descripcion": "Incienso de exótico aroma que fortalece los movimientos de tipo Planta. Debe llevarlo un Pokémon.",
+        "nombre_ingles": "rose-incense"
+    },
+    "garra afilada": {
+        "descripcion": "Aumenta la probabilidad de que el Pokémon que la lleve consiga un golpe crítico.",
+        "nombre_ingles": "razor-claw"
+    },
+    "colmillo agudo": {
+        "descripcion": "Si lo lleva un Pokémon, puede amedrentar al objetivo al infligirle daño.",
+        "nombre_ingles": "razor-fang"
+    },
+    "griseosfera": {
+        "descripcion": "Una esfera brillante que potencia los movimientos de tipo Dragón y Fantasma. Debe llevarla Giratina.",
+        "nombre_ingles": "griseous-orb"
+    },
+    "hidrorom": {
+        "descripcion": "Cartucho que convierte Tecno Shock de Genesect en un movimiento de tipo Agua.",
+        "nombre_ingles": "douse-drive"
+    },
+    "fulgorom": {
+        "descripcion": "Cartucho que convierte Tecno Shock de Genesect en un movimiento de tipo Eléctrico.",
+        "nombre_ingles": "shock-drive"
+    },
+    "pirorom": {
+        "descripcion": "Cartucho que convierte Tecno Shock de Genesect en un movimiento de tipo Fuego.",
+        "nombre_ingles": "burn-drive"
+    },
+    "criorom": {
+        "descripcion": "Cartucho que convierte Tecno Shock de Genesect en un movimiento de tipo Hielo.",
+        "nombre_ingles": "chill-drive"
+    },
+    "mineral evol": {
+        "descripcion": "Roca misteriosa. El Pokémon portador aumentará su Defensa y su Defensa Especial si aún puede evolucionar.",
+        "nombre_ingles": "eviolite"
+    },
+    "piedra pómez": {
+        "descripcion": "Piedra muy ligera que reduce el peso del Pokémon que la lleve.",
+        "nombre_ingles": "float-stone"
+    },
+    "casco dentado": {
+        "descripcion": "Si el portador es alcanzado por un movimiento de contacto, el agresor también recibe daño.",
+        "nombre_ingles": "rocky-helmet"
+    },
+    "globo helio": {
+        "descripcion": "El Pokémon que lo lleve flotará en el aire. Si recibe un golpe, estallará.",
+        "nombre_ingles": "air-balloon"
+    },
+    "tarjeta roja": {
+        "descripcion": "Misteriosa tarjeta que permite al Pokémon que la lleva expulsar al oponente cuando este le cause daño.",
+        "nombre_ingles": "red-card"
+    },
+    "blanco": {
+        "descripcion": "El Pokémon que lo lleva es vulnerable frente a movimientos que normalmente no afectan a su tipo.",
+        "nombre_ingles": "ring-target"
+    },
+    "banda atadura": {
+        "descripcion": "Banda que potencia los movimientos que estrujan al rival.",
+        "nombre_ingles": "binding-band"
+    },
+    "tubérculo": {
+        "descripcion": "Aumenta el Ataque Especial del portador si le alcanza un ataque de tipo Agua. Desaparece tras usarlo.",
+        "nombre_ingles": "absorb-bulb"
+    },
+    "pila": {
+        "descripcion": "Batería de usar y tirar que sube el Ataque de quien la lleva cuando recibe un golpe de tipo Eléctrico.",
+        "nombre_ingles": "cell-battery"
+    },
+    "botón escape": {
+        "descripcion": "Si el portador es alcanzado por un ataque, saldrá del combate y será sustituido por otro Pokémon del equipo.",
+        "nombre_ingles": "eject-button"
+    },
+    "gema fuego": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Fuego. Debe llevarla un Pokémon.",
+        "nombre_ingles": "fire-gem"
+    },
+    "gema agua": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Agua. Debe llevarla un Pokémon.",
+        "nombre_ingles": "water-gem"
+    },
+    "gema eléctrica": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Eléctrico. Debe llevarla un Pokémon.",
+        "nombre_ingles": "electric-gem"
+    },
+    "gema planta": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Planta. Debe llevarla un Pokémon.",
+        "nombre_ingles": "grass-gem"
+    },
+    "gema hielo": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Hielo. Debe llevarla un Pokémon.",
+        "nombre_ingles": "ice-gem"
+    },
+    "gema lucha": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Lucha. Debe llevarla un Pokémon.",
+        "nombre_ingles": "fighting-gem"
+    },
+    "gema veneno": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Veneno. Debe llevarla un Pokémon.",
+        "nombre_ingles": "poison-gem"
+    },
+    "gema tierra": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Tierra. Debe llevarla un Pokémon.",
+        "nombre_ingles": "ground-gem"
+    },
+    "gema voladora": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Volador. Debe llevarla un Pokémon.",
+        "nombre_ingles": "flying-gem"
+    },
+    "gema psíquica": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Psíquico. Debe llevarla un Pokémon.",
+        "nombre_ingles": "psychic-gem"
+    },
+    "gema bicho": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Bicho. Debe llevarla un Pokémon.",
+        "nombre_ingles": "bug-gem"
+    },
+    "gema roca": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Roca. Debe llevarla un Pokémon.",
+        "nombre_ingles": "rock-gem"
+    },
+    "gema fantasma": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Fantasma. Debe llevarla un Pokémon.",
+        "nombre_ingles": "ghost-gem"
+    },
+    "gema siniestra": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Siniestro. Debe llevarla un Pokémon.",
+        "nombre_ingles": "dark-gem"
+    },
+    "gema acero": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Acero. Debe llevarla un Pokémon.",
+        "nombre_ingles": "steel-gem"
+    },
+    "regalosfera": {
+        "descripcion": "Esfera misteriosa que contiene el poder de la región de Teselia y se utiliza para generar Poderes Regalo.",
+        "nombre_ingles": "pass-orb"
+    },
+    "gema dragón": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Dragón. Debe llevarla un Pokémon.",
+        "nombre_ingles": "dragon-gem"
+    },
+    "gema normal": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Normal. Debe llevarla un Pokémon.",
+        "nombre_ingles": "normal-gem"
+    },
+    "seguro debilidad": {
+        "descripcion": "Aumenta mucho el Ataque y el Ataque Especial cuando el Pokémon que lo lleva recibe un ataque frente al cual es débil.",
+        "nombre_ingles": "weakness-policy"
+    },
+    "chaleco asalto": {
+        "descripcion": "Chaleco que potencia la Defensa Especial del Pokémon que lo lleva, pero le impide lanzar movimientos de estado.",
+        "nombre_ingles": "assault-vest"
+    },
+    "tabla duende": {
+        "descripcion": "Tabla de piedra que potencia los movimientos de tipo Hada. Debe llevarla un Pokémon.",
+        "nombre_ingles": "pixie-plate"
+    },
+    "musgo brillante": {
+        "descripcion": "Objeto de un solo uso. Aumenta la Defensa Especial del Pokémon que lo lleva si este recibe un ataque de tipo Agua.",
+        "nombre_ingles": "luminous-moss"
+    },
+    "bola de nieve": {
+        "descripcion": "Objeto de un solo uso. Aumenta el Ataque del Pokémon que lo lleva si este recibe un ataque de tipo Hielo.",
+        "nombre_ingles": "snowball"
+    },
+    "gafa protectora": {
+        "descripcion": "Gafa que protege de los efectos adversos del clima y del polvo lanzado por los rivales.",
+        "nombre_ingles": "safety-goggles"
+    },
+    "gengarita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Gengar en combate.",
+        "nombre_ingles": "gengarite"
+    },
+    "gardevoirita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Gardevoir en combate.",
+        "nombre_ingles": "gardevoirite"
+    },
+    "ampharosita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Ampharos en combate.",
+        "nombre_ingles": "ampharosite"
+    },
+    "venusaurita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Venusaur en combate.",
+        "nombre_ingles": "venusaurite"
+    },
+    "charizardita x": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Charizard en combate.",
+        "nombre_ingles": "charizardite-x"
+    },
+    "blastoisita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Blastoise en combate.",
+        "nombre_ingles": "blastoisinite"
+    },
+    "mewtwoita x": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Mewtwo en combate.",
+        "nombre_ingles": "mewtwonite-x"
+    },
+    "mewtwoita y": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Mewtwo en combate.",
+        "nombre_ingles": "mewtwonite-y"
+    },
+    "blazikenita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Blaziken en combate.",
+        "nombre_ingles": "blazikenite"
+    },
+    "medichamita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Medicham en combate.",
+        "nombre_ingles": "medichamite"
+    },
+    "houndoomita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Houndoom en combate.",
+        "nombre_ingles": "houndoominite"
+    },
+    "aggronita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Aggron en combate.",
+        "nombre_ingles": "aggronite"
+    },
+    "banettita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Banette en combate.",
+        "nombre_ingles": "banettite"
+    },
+    "tyranitarita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Tyranitar en combate.",
+        "nombre_ingles": "tyranitarite"
+    },
+    "scizorita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Scizor en combate.",
+        "nombre_ingles": "scizorite"
+    },
+    "pinsirita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Pinsir en combate.",
+        "nombre_ingles": "pinsirite"
+    },
+    "aerodactylita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Aerodactyl en combate.",
+        "nombre_ingles": "aerodactylite"
+    },
+    "lucarita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Lucario en combate.",
+        "nombre_ingles": "lucarionite"
+    },
+    "abomasnowita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Abomasnow en combate.",
+        "nombre_ingles": "abomasite"
+    },
+    "kangaskhanita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Kangaskhan en combate.",
+        "nombre_ingles": "kangaskhanite"
+    },
+    "gyaradosita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Gyarados en combate.",
+        "nombre_ingles": "gyaradosite"
+    },
+    "absolita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Absol en combate.",
+        "nombre_ingles": "absolite"
+    },
+    "charizardita y": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Charizard en combate.",
+        "nombre_ingles": "charizardite-y"
+    },
+    "alakazamita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Alakazam en combate.",
+        "nombre_ingles": "alakazite"
+    },
+    "heracrossita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Heracross en combate.",
+        "nombre_ingles": "heracronite"
+    },
+    "mawilita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Mawile en combate.",
+        "nombre_ingles": "mawilite"
+    },
+    "manectricita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Manectric en combate.",
+        "nombre_ingles": "manectite"
+    },
+    "garchompita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Garchomp en combate.",
+        "nombre_ingles": "garchompite"
+    },
+    "gema hada": {
+        "descripcion": "Joya de un solo uso que potencia los movimientos de tipo Hada. Debe llevarla un Pokémon.",
+        "nombre_ingles": "fairy-gem"
+    },
+    "latiasita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Latias en combate.",
+        "nombre_ingles": "latiasite"
+    },
+    "latiosita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Latios en combate.",
+        "nombre_ingles": "latiosite"
+    },
+    "swampertita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Swampert en combate.",
+        "nombre_ingles": "swampertite"
+    },
+    "sceptilita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Sceptile en combate.",
+        "nombre_ingles": "sceptilite"
+    },
+    "sableynita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Sableye en combate.",
+        "nombre_ingles": "sablenite"
+    },
+    "altarianita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Altaria en combate.",
+        "nombre_ingles": "altarianite"
+    },
+    "galladita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Gallade en combate.",
+        "nombre_ingles": "galladite"
+    },
+    "audinita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Audino en combate.",
+        "nombre_ingles": "audinite"
+    },
+    "metagrossita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Metagross en combate.",
+        "nombre_ingles": "metagrossite"
+    },
+    "sharpedonita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Sharpedo en combate.",
+        "nombre_ingles": "sharpedonite"
+    },
+    "slowbronita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Slowbro en combate.",
+        "nombre_ingles": "slowbronite"
+    },
+    "steelixita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Steelix en combate.",
+        "nombre_ingles": "steelixite"
+    },
+    "pidgeotita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Pidgeot en combate.",
+        "nombre_ingles": "pidgeotite"
+    },
+    "glalita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Glalie en combate.",
+        "nombre_ingles": "glalitite"
+    },
+    "diancita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Diancie en combate.",
+        "nombre_ingles": "diancite"
+    },
+    "cameruptita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Camerupt en combate.",
+        "nombre_ingles": "cameruptite"
+    },
+    "lopunnita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Lopunny en combate.",
+        "nombre_ingles": "lopunnite"
+    },
+    "salamencita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Salamence en combate.",
+        "nombre_ingles": "salamencite"
+    },
+    "beedrillita": {
+        "descripcion": "Una de las misteriosas Megapiedras. Permite megaevolucionar a Beedrill en combate.",
+        "nombre_ingles": "beedrillite"
+    },
+    "nerviosfera": {
+        "descripcion": "Aumenta la Velocidad del portador si se siente intimidado.",
+        "nombre_ingles": "adrenaline-orb"
+    },
+    "néctar rojo": {
+        "descripcion": "Néctar de ciertas flores de los Jardines de Ula-Ula, capaz de hacer cambiar de forma a una determinada especie de Pokémon.",
+        "nombre_ingles": "red-nectar"
+    },
+    "néctar amarillo": {
+        "descripcion": "Néctar de ciertas flores de los Jardines de Melemele, capaz de hacer cambiar de forma a una determinada especie de Pokémon.",
+        "nombre_ingles": "yellow-nectar"
+    },
+    "néctar rosa": {
+        "descripcion": "Néctar de ciertas flores de los parterres de la Avenida Royale, capaz de hacer cambiar de forma a una determinada especie de Pokémon.",
+        "nombre_ingles": "pink-nectar"
+    },
+    "néctar violeta": {
+        "descripcion": "Néctar de ciertas flores de los Jardines de Poni, capaz de hacer cambiar de forma a una determinada especie de Pokémon.",
+        "nombre_ingles": "purple-nectar"
+    },
+    "cubresuelos": {
+        "descripcion": "Al llevarlo, prolonga la duración de los campos creados por el Pokémon en el terreno de combate mediante movimientos o su habilidad.",
+        "nombre_ingles": "terrain-extender"
+    },
+    "paracontacto": {
+        "descripcion": "Protege al Pokémon de los efectos que le produciría el contacto directo en combate.",
+        "nombre_ingles": "protective-pads"
+    },
+    "semilla electro": {
+        "descripcion": "Aumenta la Defensa del portador si se usa cuando el terreno está cubierto por un campo eléctrico.",
+        "nombre_ingles": "electric-seed"
+    },
+    "semilla psique": {
+        "descripcion": "Aumenta la Defensa Especial del portador si se usa cuando el terreno está cubierto por un campo psíquico.",
+        "nombre_ingles": "psychic-seed"
+    },
+    "semilla bruma": {
+        "descripcion": "Aumenta la Defensa Especial del portador si se usa cuando el terreno está cubierto por un campo de niebla.",
+        "nombre_ingles": "misty-seed"
+    },
+    "semilla hierba": {
+        "descripcion": "Aumenta la Defensa del portador si se usa cuando el terreno está cubierto por un campo de hierba.",
+        "nombre_ingles": "grassy-seed"
+    },
+    "espada oxidada": {
+        "descripcion": "Cuenta una antigua leyenda que un valiente héroe blandió esta espada para hacer frente a un cataclismo, pero ahora está oxidada y en un estado lamentable.",
+        "nombre_ingles": "rusted-sword"
+    },
+    "escudo oxidado": {
+        "descripcion": "Cuenta una antigua leyenda que un valiente héroe asió este escudo para hacer frente a un cataclismo, pero ahora está oxidado y en un estado lamentable.",
+        "nombre_ingles": "rusted-shield"
+    },
+    "espray bucal": {
+        "descripcion": "Aumenta el Ataque Especial al emplear un movimiento que se sirva del sonido.",
+        "nombre_ingles": "throat-spray"
+    },
+    "mochila escape": {
+        "descripcion": "Si el portador ve reducidas sus características, será sustituido por otro Pokémon del equipo.",
+        "nombre_ingles": "eject-pack"
+    },
+    "botas gruesas": {
+        "descripcion": "Anula los efectos de aquello que se coloca a los pies del Pokémon para obstaculizarlo, como las trampas.",
+        "nombre_ingles": "heavy-duty-boots"
+    },
+    "seguro fallo": {
+        "descripcion": "Aumenta mucho la Velocidad cuando el Pokémon yerra el movimiento debido a la precisión.",
+        "nombre_ingles": "blunder-policy"
+    },
+    "servicio raro": {
+        "descripcion": "Si lo lleva un Pokémon, reduce la Velocidad cuando se usa Espacio Raro.",
+        "nombre_ingles": "room-service"
+    },
+    "parasol multiuso": {
+        "descripcion": "El portador se vuelve invulnerable a los efectos de la lluvia y del sol.",
+        "nombre_ingles": "utility-umbrella"
+    },
+    "tabla en blanco": {
+        "descripcion": "Una tabla misteriosa que cambia el tipo de Arceus a tipo Normal y potencia sus movimientos de este tipo.",
+        "nombre_ingles": "blank-plate"
+    },
+    "tabla leyenda": {
+        "descripcion": "Una tabla legendaria que cambia el tipo de Arceus en combate para que siempre sea supereficaz contra el objetivo.",
+        "nombre_ingles": "legend-plate"
+    },
+    "energía potenciadora": {
+        "descripcion": "Activa automáticamente la habilidad Paleosíntesis o Carga Cuatridimensional del portador aumentando su estadística más alta.",
+        "nombre_ingles": "booster-energy"
+    },
+    "escudo habilidad": {
+        "descripcion": "Un escudo que protege la habilidad del portador para que no pueda ser cambiada, copiada o anulada por otros Pokémon.",
+        "nombre_ingles": "ability-shield"
+    },
+    "amuleto puro": {
+        "descripcion": "Un amuleto transparente que evita que las características del portador sean bajadas por movimientos o habilidades de los oponentes.",
+        "nombre_ingles": "clear-amulet"
+    },
+    "hierba copia": {
+        "descripcion": "Una hierba que permite al portador copiar los aumentos de estadísticas que se aplique un rival una sola vez en combate.",
+        "nombre_ingles": "mirror-herb"
+    },
+    "guante de boxeo": {
+        "descripcion": "Aumenta la potencia de los movimientos basados en puñetazos y evita el contacto directo con el objetivo (protegiendo de habilidades como Piel Tosca).",
+        "nombre_ingles": "punching-glove"
+    },
+    "capa furtiva": {
+        "descripcion": "Una capa que oculta al portador, protegiéndolo completamente de los efectos secundarios de los movimientos enemigos (como retroceso, parálisis o quemaduras).",
+        "nombre_ingles": "covert-cloak"
+    },
+    "dado trucado": {
+        "descripcion": "Un dado modificado que asegura que los movimientos que golpean varias veces seguidas impacten siempre el mayor número de veces posible.",
+        "nombre_ingles": "loaded-dice"
+    },
+    "pluma feérica": {
+        "descripcion": "Una pluma imbuida de magia que potencia los movimientos de tipo Hada del portador.",
+        "nombre_ingles": "fairy-feather"
+    },
+    "máscara fuente": {
+        "descripcion": "Una máscara misteriosa que permite a Ogerpon adoptar su Forma Fuente (tipo Agua) y potencia sus ataques de ese tipo.",
+        "nombre_ingles": "wellspring-mask"
+    },
+    "máscara horno": {
+        "descripcion": "Una máscara misteriosa que permite a Ogerpon adoptar su Forma Horno (tipo Fuego) y potencia sus ataques de ese tipo.",
+        "nombre_ingles": "hearthflame-mask"
+    },
+    "máscara cimiento": {
+        "descripcion": "Una máscara misteriosa que permite a Ogerpon adoptar su Forma Cimiento (tipo Roca) y potencia sus ataques de ese tipo.",
+        "nombre_ingles": "cornerstone-mask"
+    }
+}

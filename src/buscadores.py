@@ -10,6 +10,7 @@ import spacy
 import hunspell
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # ==============================================================================
 # 1. INICIALIZACIÓN DE MOTORES LINGÜÍSTICOS (Globales)

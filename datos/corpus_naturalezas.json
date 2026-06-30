@@ -1,0 +1,127 @@
+{
+    "fuerte": {
+        "sube_stat": "ninguna",
+        "baja_stat": "ninguna",
+        "nombre_ingles": "hardy"
+    },
+    "osada": {
+        "sube_stat": "defensa",
+        "baja_stat": "ataque",
+        "nombre_ingles": "bold"
+    },
+    "modesta": {
+        "sube_stat": "ataque especial",
+        "baja_stat": "ataque",
+        "nombre_ingles": "modest"
+    },
+    "serena": {
+        "sube_stat": "defensa especial",
+        "baja_stat": "ataque",
+        "nombre_ingles": "calm"
+    },
+    "miedosa": {
+        "sube_stat": "velocidad",
+        "baja_stat": "ataque",
+        "nombre_ingles": "timid"
+    },
+    "huraña": {
+        "sube_stat": "ataque",
+        "baja_stat": "defensa",
+        "nombre_ingles": "lonely"
+    },
+    "dócil": {
+        "sube_stat": "ninguna",
+        "baja_stat": "ninguna",
+        "nombre_ingles": "docile"
+    },
+    "afable": {
+        "sube_stat": "ataque especial",
+        "baja_stat": "defensa",
+        "nombre_ingles": "mild"
+    },
+    "amable": {
+        "sube_stat": "defensa especial",
+        "baja_stat": "defensa",
+        "nombre_ingles": "gentle"
+    },
+    "activa": {
+        "sube_stat": "velocidad",
+        "baja_stat": "defensa",
+        "nombre_ingles": "hasty"
+    },
+    "firme": {
+        "sube_stat": "ataque",
+        "baja_stat": "ataque especial",
+        "nombre_ingles": "adamant"
+    },
+    "agitada": {
+        "sube_stat": "defensa",
+        "baja_stat": "ataque especial",
+        "nombre_ingles": "impish"
+    },
+    "tímida": {
+        "sube_stat": "ninguna",
+        "baja_stat": "ninguna",
+        "nombre_ingles": "bashful"
+    },
+    "cauta": {
+        "sube_stat": "defensa especial",
+        "baja_stat": "ataque especial",
+        "nombre_ingles": "careful"
+    },
+    "alocada": {
+        "sube_stat": "ataque especial",
+        "baja_stat": "defensa especial",
+        "nombre_ingles": "rash"
+    },
+    "alegre": {
+        "sube_stat": "velocidad",
+        "baja_stat": "ataque especial",
+        "nombre_ingles": "jolly"
+    },
+    "pícara": {
+        "sube_stat": "ataque",
+        "baja_stat": "defensa especial",
+        "nombre_ingles": "naughty"
+    },
+    "floja": {
+        "sube_stat": "defensa",
+        "baja_stat": "defensa especial",
+        "nombre_ingles": "lax"
+    },
+    "rara": {
+        "sube_stat": "ninguna",
+        "baja_stat": "ninguna",
+        "nombre_ingles": "quirky"
+    },
+    "ingenua": {
+        "sube_stat": "velocidad",
+        "baja_stat": "defensa especial",
+        "nombre_ingles": "naive"
+    },
+    "audaz": {
+        "sube_stat": "ataque",
+        "baja_stat": "velocidad",
+        "nombre_ingles": "brave"
+    },
+    "plácida": {
+        "sube_stat": "defensa",
+        "baja_stat": "velocidad",
+        "nombre_ingles": "relaxed"
+    },
+    "mansa": {
+        "sube_stat": "ataque especial",
+        "baja_stat": "velocidad",
+        "nombre_ingles": "quiet"
+    },
+    "grosera": {
+        "sube_stat": "defensa especial",
+        "baja_stat": "velocidad",
+        "nombre_ingles": "sassy"
+    },
+    "seria": {
+        "sube_stat": "ninguna",
+        "baja_stat": "ninguna",
+        "nombre_ingles": "serious"
+    }
+}

@@ -26,7 +26,7 @@ st.markdown("""
 url_banner = "iconos/banner_f.png"
 
 try:
-    st.image(url_banner, use_container_width=True)
+    st.image(url_banner, width="stretch")
 except Exception as e:
     st.warning("No se pudo cargar el banner con el enlace.")
 
@@ -63,13 +63,21 @@ if prompt_usuario := st.chat_input("¿Qué te interesa saber?"):
                 # Usamos la función importada de tu motor
                 final_prompt = construir_prompt(prompt_usuario, contexto_unido)
                 
-                # Llamamos a la API usando el modelo cargado en el motor
-                respuesta_llm = llm_generador.text_generation(
-                    prompt=final_prompt,
-                    max_new_tokens=600,
-                    temperature=0.2,
-                    repetition_penalty=1.1
-                ).strip()
+                # # Llamamos a la API usando el modelo cargado en el motor
+                # respuesta_llm = llm_generador.text_generation(
+                #     prompt=final_prompt,
+                #     max_new_tokens=600,
+                #     temperature=0.2,
+                #     repetition_penalty=1.1
+                # ).strip()
+
+                # Llamamos a la API usando el formato conversacional estricto que exige el servidor
+                respuesta_api = llm_generador.chat_completion(
+                    messages=[{"role": "user", "content": final_prompt}],
+                    max_tokens=600,
+                    temperature=0.2
+                )
+                respuesta_llm = respuesta_api.choices[0].message.content.strip()
 
                 st.markdown(respuesta_llm)
 

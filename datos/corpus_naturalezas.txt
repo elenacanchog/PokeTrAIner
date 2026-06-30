@@ -1,0 +1,25 @@
+La naturaleza Fuerte (en inglés hardy) es una naturaleza neutra. No aumenta ni disminuye ninguna estadística.
+La naturaleza Osada (en inglés bold) modifica las estadísticas incrementando la defensa y reduciendo la ataque.
+La naturaleza Modesta (en inglés modest) modifica las estadísticas incrementando la ataque especial y reduciendo la ataque.
+La naturaleza Serena (en inglés calm) modifica las estadísticas incrementando la defensa especial y reduciendo la ataque.
+La naturaleza Miedosa (en inglés timid) modifica las estadísticas incrementando la velocidad y reduciendo la ataque.
+La naturaleza Huraña (en inglés lonely) modifica las estadísticas incrementando la ataque y reduciendo la defensa.
+La naturaleza Dócil (en inglés docile) es una naturaleza neutra. No aumenta ni disminuye ninguna estadística.
+La naturaleza Afable (en inglés mild) modifica las estadísticas incrementando la ataque especial y reduciendo la defensa.
+La naturaleza Amable (en inglés gentle) modifica las estadísticas incrementando la defensa especial y reduciendo la defensa.
+La naturaleza Activa (en inglés hasty) modifica las estadísticas incrementando la velocidad y reduciendo la defensa.
+La naturaleza Firme (en inglés adamant) modifica las estadísticas incrementando la ataque y reduciendo la ataque especial.
+La naturaleza Agitada (en inglés impish) modifica las estadísticas incrementando la defensa y reduciendo la ataque especial.
+La naturaleza Tímida (en inglés bashful) es una naturaleza neutra. No aumenta ni disminuye ninguna estadística.
+La naturaleza Cauta (en inglés careful) modifica las estadísticas incrementando la defensa especial y reduciendo la ataque especial.
+La naturaleza Alocada (en inglés rash) modifica las estadísticas incrementando la ataque especial y reduciendo la defensa especial.
+La naturaleza Alegre (en inglés jolly) modifica las estadísticas incrementando la velocidad y reduciendo la ataque especial.
+La naturaleza Pícara (en inglés naughty) modifica las estadísticas incrementando la ataque y reduciendo la defensa especial.
+La naturaleza Floja (en inglés lax) modifica las estadísticas incrementando la defensa y reduciendo la defensa especial.
+La naturaleza Rara (en inglés quirky) es una naturaleza neutra. No aumenta ni disminuye ninguna estadística.
+La naturaleza Ingenua (en inglés naive) modifica las estadísticas incrementando la velocidad y reduciendo la defensa especial.
+La naturaleza Audaz (en inglés brave) modifica las estadísticas incrementando la ataque y reduciendo la velocidad.
+La naturaleza Plácida (en inglés relaxed) modifica las estadísticas incrementando la defensa y reduciendo la velocidad.
+La naturaleza Mansa (en inglés quiet) modifica las estadísticas incrementando la ataque especial y reduciendo la velocidad.
+La naturaleza Grosera (en inglés sassy) modifica las estadísticas incrementando la defensa especial y reduciendo la velocidad.
+La naturaleza Seria (en inglés serious) es una naturaleza neutra. No aumenta ni disminuye ninguna estadística.

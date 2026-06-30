@@ -1,0 +1,489 @@
+{
+    "normal": {
+        "supereficaz_contra": [],
+        "poco_eficaz_contra": [
+            "roca",
+            "acero"
+        ],
+        "inmune_contra": [
+            "fantasma"
+        ],
+        "debil_a": [
+            "lucha"
+        ],
+        "resistente_a": [],
+        "inmune_a": [
+            "fantasma"
+        ],
+        "nombre_ingles": "normal"
+    },
+    "fuego": {
+        "supereficaz_contra": [
+            "bicho",
+            "acero",
+            "planta",
+            "hielo"
+        ],
+        "poco_eficaz_contra": [
+            "roca",
+            "fuego",
+            "agua",
+            "dragón"
+        ],
+        "inmune_contra": [],
+        "debil_a": [
+            "tierra",
+            "roca",
+            "agua"
+        ],
+        "resistente_a": [
+            "bicho",
+            "acero",
+            "fuego",
+            "planta",
+            "hielo",
+            "hada"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "fire"
+    },
+    "agua": {
+        "supereficaz_contra": [
+            "tierra",
+            "roca",
+            "fuego"
+        ],
+        "poco_eficaz_contra": [
+            "agua",
+            "planta",
+            "dragón"
+        ],
+        "inmune_contra": [],
+        "debil_a": [
+            "planta",
+            "eléctrico"
+        ],
+        "resistente_a": [
+            "acero",
+            "fuego",
+            "agua",
+            "hielo"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "water"
+    },
+    "eléctrico": {
+        "supereficaz_contra": [
+            "volador",
+            "agua"
+        ],
+        "poco_eficaz_contra": [
+            "planta",
+            "eléctrico",
+            "dragón"
+        ],
+        "inmune_contra": [
+            "tierra"
+        ],
+        "debil_a": [
+            "tierra"
+        ],
+        "resistente_a": [
+            "volador",
+            "acero",
+            "eléctrico"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "electric"
+    },
+    "planta": {
+        "supereficaz_contra": [
+            "tierra",
+            "roca",
+            "agua"
+        ],
+        "poco_eficaz_contra": [
+            "volador",
+            "veneno",
+            "bicho",
+            "acero",
+            "fuego",
+            "planta",
+            "dragón"
+        ],
+        "inmune_contra": [],
+        "debil_a": [
+            "volador",
+            "veneno",
+            "bicho",
+            "fuego",
+            "hielo"
+        ],
+        "resistente_a": [
+            "tierra",
+            "agua",
+            "planta",
+            "eléctrico"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "grass"
+    },
+    "hielo": {
+        "supereficaz_contra": [
+            "volador",
+            "tierra",
+            "planta",
+            "dragón"
+        ],
+        "poco_eficaz_contra": [
+            "acero",
+            "fuego",
+            "agua",
+            "hielo"
+        ],
+        "inmune_contra": [],
+        "debil_a": [
+            "lucha",
+            "roca",
+            "acero",
+            "fuego"
+        ],
+        "resistente_a": [
+            "hielo"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "ice"
+    },
+    "lucha": {
+        "supereficaz_contra": [
+            "normal",
+            "roca",
+            "acero",
+            "hielo",
+            "siniestro"
+        ],
+        "poco_eficaz_contra": [
+            "volador",
+            "veneno",
+            "bicho",
+            "psíquico",
+            "hada"
+        ],
+        "inmune_contra": [
+            "fantasma"
+        ],
+        "debil_a": [
+            "volador",
+            "psíquico",
+            "hada"
+        ],
+        "resistente_a": [
+            "roca",
+            "bicho",
+            "siniestro"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "fighting"
+    },
+    "veneno": {
+        "supereficaz_contra": [
+            "planta",
+            "hada"
+        ],
+        "poco_eficaz_contra": [
+            "veneno",
+            "tierra",
+            "roca",
+            "fantasma"
+        ],
+        "inmune_contra": [
+            "acero"
+        ],
+        "debil_a": [
+            "tierra",
+            "psíquico"
+        ],
+        "resistente_a": [
+            "lucha",
+            "veneno",
+            "bicho",
+            "planta",
+            "hada"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "poison"
+    },
+    "tierra": {
+        "supereficaz_contra": [
+            "veneno",
+            "roca",
+            "acero",
+            "fuego",
+            "eléctrico"
+        ],
+        "poco_eficaz_contra": [
+            "bicho",
+            "planta"
+        ],
+        "inmune_contra": [
+            "volador"
+        ],
+        "debil_a": [
+            "agua",
+            "planta",
+            "hielo"
+        ],
+        "resistente_a": [
+            "veneno",
+            "roca"
+        ],
+        "inmune_a": [
+            "eléctrico"
+        ],
+        "nombre_ingles": "ground"
+    },
+    "volador": {
+        "supereficaz_contra": [
+            "lucha",
+            "bicho",
+            "planta"
+        ],
+        "poco_eficaz_contra": [
+            "roca",
+            "acero",
+            "eléctrico"
+        ],
+        "inmune_contra": [],
+        "debil_a": [
+            "roca",
+            "eléctrico",
+            "hielo"
+        ],
+        "resistente_a": [
+            "lucha",
+            "bicho",
+            "planta"
+        ],
+        "inmune_a": [
+            "tierra"
+        ],
+        "nombre_ingles": "flying"
+    },
+    "psíquico": {
+        "supereficaz_contra": [
+            "lucha",
+            "veneno"
+        ],
+        "poco_eficaz_contra": [
+            "acero",
+            "psíquico"
+        ],
+        "inmune_contra": [
+            "siniestro"
+        ],
+        "debil_a": [
+            "bicho",
+            "fantasma",
+            "siniestro"
+        ],
+        "resistente_a": [
+            "lucha",
+            "psíquico"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "psychic"
+    },
+    "bicho": {
+        "supereficaz_contra": [
+            "planta",
+            "psíquico",
+            "siniestro"
+        ],
+        "poco_eficaz_contra": [
+            "lucha",
+            "volador",
+            "veneno",
+            "fantasma",
+            "acero",
+            "fuego",
+            "hada"
+        ],
+        "inmune_contra": [],
+        "debil_a": [
+            "volador",
+            "roca",
+            "fuego"
+        ],
+        "resistente_a": [
+            "lucha",
+            "tierra",
+            "planta"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "bug"
+    },
+    "roca": {
+        "supereficaz_contra": [
+            "volador",
+            "bicho",
+            "fuego",
+            "hielo"
+        ],
+        "poco_eficaz_contra": [
+            "lucha",
+            "tierra",
+            "acero"
+        ],
+        "inmune_contra": [],
+        "debil_a": [
+            "lucha",
+            "tierra",
+            "acero",
+            "agua",
+            "planta"
+        ],
+        "resistente_a": [
+            "normal",
+            "volador",
+            "veneno",
+            "fuego"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "rock"
+    },
+    "fantasma": {
+        "supereficaz_contra": [
+            "fantasma",
+            "psíquico"
+        ],
+        "poco_eficaz_contra": [
+            "siniestro"
+        ],
+        "inmune_contra": [
+            "normal"
+        ],
+        "debil_a": [
+            "fantasma",
+            "siniestro"
+        ],
+        "resistente_a": [
+            "veneno",
+            "bicho"
+        ],
+        "inmune_a": [
+            "normal",
+            "lucha"
+        ],
+        "nombre_ingles": "ghost"
+    },
+    "dragón": {
+        "supereficaz_contra": [
+            "dragón"
+        ],
+        "poco_eficaz_contra": [
+            "acero"
+        ],
+        "inmune_contra": [
+            "hada"
+        ],
+        "debil_a": [
+            "hielo",
+            "dragón",
+            "hada"
+        ],
+        "resistente_a": [
+            "fuego",
+            "agua",
+            "planta",
+            "eléctrico"
+        ],
+        "inmune_a": [],
+        "nombre_ingles": "dragon"
+    },
+    "siniestro": {
+        "supereficaz_contra": [
+            "fantasma",
+            "psíquico"
+        ],
+        "poco_eficaz_contra": [
+            "lucha",
+            "siniestro",
+            "hada"
+        ],
+        "inmune_contra": [],
+        "debil_a": [
+            "lucha",
+            "bicho",
+            "hada"
+        ],
+        "resistente_a": [
+            "fantasma",
+            "siniestro"
+        ],
+        "inmune_a": [
+            "psíquico"
+        ],
+        "nombre_ingles": "dark"
+    },
+    "acero": {
+        "supereficaz_contra": [
+            "roca",
+            "hielo",
+            "hada"
+        ],
+        "poco_eficaz_contra": [
+            "acero",
+            "fuego",
+            "agua",
+            "eléctrico"
+        ],
+        "inmune_contra": [],
+        "debil_a": [
+            "lucha",
+            "tierra",
+            "fuego"
+        ],
+        "resistente_a": [
+            "normal",
+            "volador",
+            "roca",
+            "bicho",
+            "acero",
+            "planta",
+            "psíquico",
+            "hielo",
+            "dragón",
+            "hada"
+        ],
+        "inmune_a": [
+            "veneno"
+        ],
+        "nombre_ingles": "steel"
+    },
+    "hada": {
+        "supereficaz_contra": [
+            "lucha",
+            "dragón",
+            "siniestro"
+        ],
+        "poco_eficaz_contra": [
+            "veneno",
+            "acero",
+            "fuego"
+        ],
+        "inmune_contra": [],
+        "debil_a": [
+            "veneno",
+            "acero"
+        ],
+        "resistente_a": [
+            "lucha",
+            "bicho",
+            "siniestro"
+        ],
+        "inmune_a": [
+            "dragón"
+        ],
+        "nombre_ingles": "fairy"
+    }
+}
