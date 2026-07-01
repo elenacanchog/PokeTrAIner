@@ -7,3 +7,6 @@ sentence-transformers
 numpy
 huggingface_hub
 python-dotenv
+langchain
+langchain-community
+langchain-huggingface

@@ -53,7 +53,10 @@ def cargar_entorno_rag():
         st.error("ERROR: no se ha detectado el token de Hugging Face en el entorno (.env).")
         st.stop()
 
-    modelo_id = "Qwen/Qwen2.5-7B-Instruct"
+    modelo_id = "Qwen/Qwen2.5-72B-Instruct"
+    #Otros modelos usados:
+    # Qwen/Qwen2.5-7B-Instruct
+    # mistralai/Mixtral-8x7B-Instruct-v0.1
     llm_generador = InferenceClient(model=modelo_id, token=hf_token)
 
     return (vocabulario_oficial, corpus_textos, modelo_tfidf, matriz_tfidf_corpus,
@@ -140,8 +143,8 @@ def buscar_informacion(texto_usuario, top_k=5, alpha=0.5):
     return resultados
 
 def construir_prompt(pregunta, contexto):
-    prompt = f"""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
-Eres 'PokéTrAIner', el mejor profesor de combates Pokémon del mundo.
+    # La caja del sistema: SOLO TUS REGLAS PURAS
+    instrucciones_sistema = """Eres 'PokéTrAIner', el mejor profesor de combates Pokémon del mundo.
 Tienes permiso absoluto para hablar sobre mecánicas de videojuegos, objetos, ataques y estrategias.
 
 TU MISIÓN:
@@ -151,16 +154,24 @@ REGLAS:
 1. ADÁPTATE A LA PREGUNTA:
    - Si preguntan por un OBJETO, ATAQUE o TIPO, lee el [CONTEXTO RECOPILADO] y explica exactamente lo que dice ahí.
    - Si piden una ESTRATEGIA, cruza las estadísticas del [CONTEXTO RECOPILADO] con tu conocimiento oficial.
-2. PROHIBIDO INVENTAR DATOS (CERO ALUCINACIONES):
+2. PROHIBIDO INVENTAR DATOS:
    - Si recomiendas una Naturaleza, asegúrate de recordar exactamente qué sube y qué baja. Si no estás 100% seguro, no lo menciones.
-   - Si el usuario te pregunta "quién usa un ataque" o "dónde se consigue", y esa información NO está en el [CONTEXTO RECOPILADO], debes decir explícitamente: "No dispongo de esa información en mis registros actuales." No intentes adivinar juegos ni Pokémon.
-3. SÉ HONESTO: Si te preguntan por crossovers (como Zelda) o cosas ajenas a Pokémon competitivo, indica que solo puedes hablar de Pokémon.
-
-[CONTEXTO RECOPILADO]
-{contexto}
-<|eot_id|><|start_header_id|>user<|end_header_id|>
-
-PREGUNTA DEL USUARIO: {pregunta}
-<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+   - Si el usuario te pregunta "quién usa un ataque" o "dónde se consigue",
+   y esa información NO está en el [CONTEXTO RECOPILADO], debes decir explícitamente:
+   "No dispongo de esa información en mis registros actuales." No intentes adivinar juegos ni Pokémon.
+3. SÉ HONESTO: si te preguntan por crossovers (como Zelda) o cosas ajenas a Pokémon competitivo, indica que solo puedes hablar de Pokémon.
 """
-    return prompt
+
+    # La caja del usuario: EL CONTEXTO Y LA PREGUNTA
+    mensaje_usuario = f"""[CONTEXTO RECOPILADO]
+{contexto}
+
+PREGUNTA DEL USUARIO: {pregunta}"""
+
+    # Las dos cajas separadas y ordenadas
+    mensajes = [
+        {"role": "system", "content": instrucciones_sistema},
+        {"role": "user", "content": mensaje_usuario}
+    ]
+
+    return mensajes

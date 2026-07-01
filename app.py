@@ -57,7 +57,7 @@ if prompt_usuario := st.chat_input("¿Qué te interesa saber?"):
         with st.spinner("Analizando datos..."):
             try:
                 # Usamos la función importada de tu motor
-                documentos_recuperados = buscar_informacion(prompt_usuario, top_k=7, alpha=0.3)
+                documentos_recuperados = buscar_informacion(prompt_usuario, top_k=3, alpha=0.8)
                 contexto_unido = "\n- ".join([doc['texto'] for doc in documentos_recuperados])
 
                 # Usamos la función importada de tu motor
@@ -71,12 +71,17 @@ if prompt_usuario := st.chat_input("¿Qué te interesa saber?"):
                 #     repetition_penalty=1.1
                 # ).strip()
 
-                # Llamamos a la API usando el formato conversacional estricto que exige el servidor
+                final_prompt = construir_prompt(prompt_usuario, contexto_unido)
+                
+                # Como final_prompt ya es una lista [system, user], se la pasamos directa a la API
                 respuesta_api = llm_generador.chat_completion(
-                    messages=[{"role": "user", "content": final_prompt}],
-                    max_tokens=600,
-                    temperature=0.2
+                    messages=final_prompt,
+                    max_tokens=1024,
+                    temperature=0.1,
+                    top_p=0.9
                 )
+                
+                # Extraemos el texto de la respuesta (equivalente a tu salida_raw[0]['generated_text'])
                 respuesta_llm = respuesta_api.choices[0].message.content.strip()
 
                 st.markdown(respuesta_llm)
