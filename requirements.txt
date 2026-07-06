@@ -10,3 +10,6 @@ python-dotenv
 langchain
 langchain-community
 langchain-huggingface
+langchain-classic
+langchain-openai
+langchain-groq

@@ -12,6 +12,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
+# --- IMPORTS DE LANGCHAIN ---
+from langchain_core.tools import tool
+from langchain_groq import ChatGroq
+from langchain_core.prompts import PromptTemplate
+from langchain_classic.agents.format_scratchpad import format_log_to_str
+from langchain_classic.agents.output_parsers import ReActSingleInputOutputParser
+from langchain_classic.tools.render import render_text_description
+from langchain_classic.agents import AgentExecutor
 
 # Cargar variables de entorno locales
 load_dotenv()
@@ -48,16 +56,44 @@ def cargar_entorno_rag():
     dic_espanol = hunspell.HunSpell('/usr/share/hunspell/es_ES.dic', '/usr/share/hunspell/es_ES.aff')
     modelo_embeddings = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
 
-    hf_token = os.environ.get("HF_TOKEN")
-    if not hf_token:
-        st.error("ERROR: no se ha detectado el token de Hugging Face en el entorno (.env).")
+    # hf_token = os.environ.get("HF_TOKEN")
+    # if not hf_token:
+    #     st.error("ERROR: no se ha detectado el token de Hugging Face en el entorno (.env).")
+    #     st.stop()
+    
+    # Cargamos nueva API Key de Groq
+    groq_api_key = os.environ.get("GROQ_API_KEY")
+    if not groq_api_key:
+        st.error("ERROR: no se ha detectado el GROQ_API_KEY en el entorno (.env).")
         st.stop()
 
-    modelo_id = "Qwen/Qwen2.5-72B-Instruct"
+    modelo_id = "llama-3.3-70b-versatile"
     #Otros modelos usados:
     # Qwen/Qwen2.5-7B-Instruct
     # mistralai/Mixtral-8x7B-Instruct-v0.1
-    llm_generador = InferenceClient(model=modelo_id, token=hf_token)
+    # Qwen/Qwen2.5-72B-Instruct
+
+    # Usamos el conector oficial de LangChain
+    # llm_generador = ChatOpenAI(
+    #     model=modelo_id,                                     
+    #     base_url="https://api-inference.huggingface.co/v1/", # El túnel
+    #     api_key=hf_token,
+    #     temperature=0.1,
+    #     max_retries=3,
+    #     timeout=180.0,
+    #     max_tokens=1024,
+    #     top_p=0.9
+    # )
+
+    llm_generador = ChatGroq(
+        model_name=modelo_id,
+        api_key=groq_api_key,
+        temperature=0.1,
+        max_tokens=1024,
+        max_retries=3,
+        timeout=180.0,
+        model_kwargs={"top_p": 0.9} # Empaquetamos top_p aquí para limpiar el warning
+    )
 
     return (vocabulario_oficial, corpus_textos, modelo_tfidf, matriz_tfidf_corpus,
             matriz_embeddings_corpus, nlp, dic_espanol, modelo_embeddings, llm_generador)
@@ -175,3 +211,99 @@ PREGUNTA DEL USUARIO: {pregunta}"""
     ]
 
     return mensajes
+
+
+
+# ==========================================
+# HERRAMIENTAS DEL AGENTE (LANGCHAIN)
+# ==========================================
+
+@tool
+def herramienta_pokedex(consulta: str) -> str:
+    """
+    Busca en la base de datos oficial de Pokémon (Pokédex).
+    Úsala SIEMPRE que necesites buscar estadísticas, debilidades, tipos, 
+    efectos de naturalezas, ataques u objetos para responder al usuario.
+    """
+    # 1. Usamos TU función original intacta (con top_k=3 para no saturar)
+    documentos_recuperados = buscar_informacion(consulta, top_k=3, alpha=0.8)
+    
+    # 2. Si el buscador no encuentra nada, avisamos al Agente
+    if not documentos_recuperados:
+        return "No se encontró información en la Pokédex sobre esa consulta."
+    
+    # 3. Formateamos la salida en un solo texto limpio para que el Agente lo lea
+    contexto_unido = "\n- ".join([doc['texto'] for doc in documentos_recuperados])
+    return contexto_unido
+
+
+# ==========================================
+# 7. INICIALIZACIÓN DEL AGENTE REACT
+# ==========================================
+
+# 1. Metemos tu herramienta en la lista de herramientas disponibles para el agente
+herramientas_agente = [herramienta_pokedex]
+
+# 2. Definimos el Prompt del sistema con el formato estricto ReAct
+plantilla_react = """Eres 'PokéTrAIner', el mejor profesor de combates Pokémon del mundo.
+Tienes permiso absoluto para hablar sobre mecánicas de videojuegos, objetos, ataques y estrategias.
+
+REGLAS:
+1. ADÁPTATE A LA PREGUNTA: Usa tus herramientas para buscar datos exactos y construir estrategias basadas en ellos.
+2. PROHIBIDO INVENTAR DATOS: Si recomiendas algo, asegúrate de que sea real. Si no encuentras información sobre algo en tus herramientas, di que no dispones de esos registros.
+3. SÉ HONESTO: Solo puedes hablar de Pokémon competitivo.
+
+Para responder al usuario, DEBES seguir estrictamente este formato de pensamiento paso a paso:
+
+Thought: Siempre debes pensar qué necesitas hacer para responder. ¿Necesitas buscar en la Pokédex?
+Action: La herramienta que vas a usar (debe ser exactamente: herramienta_pokedex).
+Action Input: El texto exacto que vas a buscar en la herramienta.
+Observation: El resultado que te devuelve la herramienta (Esto aparecerá automáticamente, no lo inventes).
+... (Este ciclo de Thought/Action/Action Input/Observation se puede repetir si necesitas buscar más cosas)
+
+Thought: Ya sé la respuesta final tras analizar los datos recopilados.
+Final Answer: La respuesta final y detallada que leerá el usuario en español de forma clara y entusiasta.
+
+Herramientas disponibles:
+{tools}
+
+Nombres de las herramientas:
+{tool_names}
+
+PREGUNTA DEL USUARIO: {input}
+
+Empieza a pensar ahora:
+{agent_scratchpad}"""
+
+prompt_agente = PromptTemplate.from_template(plantilla_react)
+
+# 3. Rellenamos el prompt con la descripción automática de tu herramienta
+prompt_agente = prompt_agente.partial(
+    tools=render_text_description(herramientas_agente),
+    tool_names=", ".join([t.name for t in herramientas_agente]),
+)
+
+# 4. EL FRENO CRÍTICO: Le decimos al LLM que se detenga a esperar en cuanto escriba "Observation:"
+# Así evitamos que alucine los datos del buscador.
+llm_con_stop = llm_generador.bind(stop=["\nObservation:", "Observation:"])
+
+# 5. CONSTRUIMOS EL AGENTE PASO A PASO (LCEL - LangChain Expression Language)
+agente_pokedex = (
+    {
+        # Recoge la pregunta del usuario
+        "input": lambda x: x["input"],
+        # Recoge el historial de "Thought/Action/Observation" que va acumulando
+        "agent_scratchpad": lambda x: format_log_to_str(x["intermediate_steps"]),
+    }
+    | prompt_agente
+    | llm_con_stop
+    | ReActSingleInputOutputParser()
+)
+
+# 6. Creamos el ejecutor final (El bucle While que repite el proceso hasta llegar a Final Answer)
+ejecutor_agente = AgentExecutor(
+    agent=agente_pokedex, 
+    tools=herramientas_agente, 
+    verbose=True, 
+    handle_parsing_errors=True
+)

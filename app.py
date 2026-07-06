@@ -1,8 +1,8 @@
 import streamlit as st
 from PIL import Image
 
-# IMPORTANTE: Aquí importamos tu lógica desde la carpeta src
-from src.motor_rag import buscar_informacion, construir_prompt, llm_generador
+# IMPORTANTE: Importamos únicamente el Agente (él ya tiene las herramientas dentro)
+from src.motor_rag import ejecutor_agente
 
 # ==========================================
 # 1. CONFIGURACIÓN VISUAL Y DISEÑO POKÉMON
@@ -56,41 +56,22 @@ if prompt_usuario := st.chat_input("¿Qué te interesa saber?"):
     with st.chat_message("assistant", avatar=url_icono_chat):
         with st.spinner("Analizando datos..."):
             try:
-                # Usamos la función importada de tu motor
-                documentos_recuperados = buscar_informacion(prompt_usuario, top_k=3, alpha=0.8)
-                contexto_unido = "\n- ".join([doc['texto'] for doc in documentos_recuperados])
-
-                # Usamos la función importada de tu motor
-                final_prompt = construir_prompt(prompt_usuario, contexto_unido)
-                
-                # # Llamamos a la API usando el modelo cargado en el motor
-                # respuesta_llm = llm_generador.text_generation(
-                #     prompt=final_prompt,
-                #     max_new_tokens=600,
-                #     temperature=0.2,
-                #     repetition_penalty=1.1
-                # ).strip()
-
-                final_prompt = construir_prompt(prompt_usuario, contexto_unido)
-                
-                # Como final_prompt ya es una lista [system, user], se la pasamos directa a la API
-                respuesta_api = llm_generador.chat_completion(
-                    messages=final_prompt,
-                    max_tokens=1024,
-                    temperature=0.1,
-                    top_p=0.9
+                # 1. Le pasamos directamente la pregunta cruda del usuario al Agente
+                respuesta_bruta = ejecutor_agente.invoke(
+                    {"input": prompt_usuario}
                 )
                 
-                # Extraemos el texto de la respuesta (equivalente a tu salida_raw[0]['generated_text'])
-                respuesta_llm = respuesta_api.choices[0].message.content.strip()
-
+                # 2. LangChain devuelve un diccionario. La respuesta final está en la clave 'output'
+                respuesta_llm = respuesta_bruta["output"]
+                
+                # 3. Mostramos la respuesta en la interfaz
                 st.markdown(respuesta_llm)
-
-                with st.expander("Ver fuentes de Pokédex consultadas"):
-                    for i, f in enumerate(documentos_recuperados):
-                        st.write(f"   [{i+1}] {f['texto']}")
-
+                
+                # 4. Guardamos en el historial
                 st.session_state.mensajes.append({"role": "assistant", "content": respuesta_llm})
+                
+                # NOTA TEMPORAL: Por ahora quitamos el expander de "fuentes consultadas", 
+                # porque el agente gestiona las búsquedas internamente. Lo añadiremos más adelante si quieres.
 
             except Exception as e:
-                st.error(f"Lo siento, ocurrió un error en la base de datos: {e}")
+                st.error(f"Lo siento, el Agente encontró un obstáculo en su razonamiento: {e}")
