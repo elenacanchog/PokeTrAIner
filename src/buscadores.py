@@ -79,24 +79,48 @@ def transformar_json_a_parrafos():
             for nombre, info in pokemon_data.items():
                 tipos = ", ".join(info["tipos"])
                 stats = info["estadisticas_base"]
-                debilidades = []
-                for t in info["tipos"]:
-                    if t in tipos_data:
-                        debilidades.extend(tipos_data[t]["debil_a"])
-                debilidades_unicas = list(set([d for d in debilidades if d != "ninguno"]))
-                texto_debilidades = ", ".join(debilidades_unicas) if debilidades_unicas else "ninguna en particular"
                 nombre_en = info.get("nombre_ingles", nombre).replace("-", " ")
                 
+                # 1. CÁLCULO MATEMÁTICO DE DEBILIDADES (Multiplicadores)
+                multiplicadores = {}
+                for atacante in tipos_data.keys():
+                    multiplicadores[atacante] = 1.0  # Daño neutro por defecto
+                    
+                for t in info["tipos"]:
+                    if t in tipos_data:
+                        for atacante in tipos_data[t]["debil_a"]: multiplicadores[atacante] *= 2.0
+                        for atacante in tipos_data[t]["resistente_a"]: multiplicadores[atacante] *= 0.5
+                        for atacante in tipos_data[t]["inmune_a"]: multiplicadores[atacante] *= 0.0
+                
+                # 2. CLASIFICACIÓN TÁCTICA
+                debil_x4 = [t for t, mult in multiplicadores.items() if mult >= 4.0]
+                debil_x2 = [t for t, mult in multiplicadores.items() if mult == 2.0]
+                resistencias = [t for t, mult in multiplicadores.items() if 0 < mult <= 0.5]
+                inmunidades = [t for t, mult in multiplicadores.items() if mult == 0.0]
+                
+                txt_x4 = f"Debilidad extrema (Daño x4): {', '.join(debil_x4)}. " if debil_x4 else ""
+                txt_x2 = f"Debilidades (Daño x2): {', '.join(debil_x2)}. " if debil_x2 else ""
+                txt_res = f"Resistencias: {', '.join(resistencias)}. " if resistencias else ""
+                txt_inm = f"Inmunidades (Daño nulo): {', '.join(inmunidades)}. " if inmunidades else ""
+                
+                texto_defensivo = f"{txt_x4}{txt_x2}{txt_res}{txt_inm}".strip()
+                if not texto_defensivo: 
+                    texto_defensivo = "Ninguna debilidad o resistencia destacable."
+                
+                # 3. ROL TÁCTICO (Identificar su mejor estadística)
+                stat_max_nombre = max(stats, key=stats.get)
+                
+                # 4. CREACIÓN DEL TEXTO CON ETIQUETA SEMÁNTICA
                 parrafo = (
-                    f"El Pokémon {nombre.capitalize()} (nombre original en inglés: {nombre_en}) es de tipo {tipos}. "
-                    f"Debido a sus tipos, tiene debilidad a los ataques de tipo: {texto_debilidades}. "
-                    f"Sus estadísticas base de combate son las siguientes: "
-                    f"Puntos de Salud (PS): {stats.get('hp', stats.get('ps', 0))}, "
+                    f"[CATEGORÍA: POKÉMON] El Pokémon {nombre.capitalize()} (en inglés: {nombre_en}) es de tipo {tipos}. "
+                    f"Perfil defensivo: {texto_defensivo} "
+                    f"Estadísticas base: PS: {stats.get('hp', stats.get('ps', 0))}, "
                     f"Ataque: {stats.get('attack', stats.get('ataque', 0))}, "
                     f"Defensa: {stats.get('defense', stats.get('defensa', 0))}, "
                     f"Ataque Especial: {stats.get('special-attack', stats.get('ataque especial', 0))}, "
-                    f"Defensa Especial: {stats.get('special-defense', stats.get('defensa especial', 0))} y "
-                    f"Velocidad: {stats.get('speed', stats.get('velocidad', 0))}."
+                    f"Defensa Especial: {stats.get('special-defense', stats.get('defensa especial', 0))}, "
+                    f"Velocidad: {stats.get('speed', stats.get('velocidad', 0))}. "
+                    f"Su estadística más alta es {stat_max_nombre}, lo que define su rol táctico."
                 )
                 parrafos_pokemon.append(parrafo)
             
@@ -120,7 +144,7 @@ def transformar_json_a_parrafos():
                 nombre_en = relaciones.get("nombre_ingles", tipo).replace("-", " ")
                 
                 parrafo = (
-                    f"Tabla de tipos {tipo.capitalize()} (conocido en inglés como tipo {nombre_en}): "
+                    f"[CATEGORÍA: TIPO] Tabla de tipos {tipo.capitalize()} (conocido en inglés como tipo {nombre_en}): "
                     f"Es supereficaz (hace el doble de daño) contra: {supereficaz}. "
                     f"Es poco eficaz (hace la mitad de daño) contra: {poco_eficaz}. "
                     f"No hace daño (inmune en ataque) contra: {inmune_contra}. "
@@ -145,7 +169,7 @@ def transformar_json_a_parrafos():
                 precision = f"{info['precision']}%" if info["precision"] else "no falla"
                 nombre_en = info.get("nombre_ingles", nombre).replace("-", " ")
                 parrafo = (
-                    f"El movimiento o ataque {nombre.capitalize()} (conocido en inglés como {nombre_en}) es de tipo {info['tipo']} "
+                    f"[CATEGORÍA: MOVIMIENTO] El ataque {nombre.capitalize()} (en inglés: {nombre_en}) es de tipo {info['tipo']} "
                     f"y pertenece a la categoría {info['categoria']}. "
                     f"Tiene una potencia de {potencia}, una precisión de {precision} y cuenta con {info['pp']} Puntos de Poder (PP). "
                     f"Efecto en combate: {info['efecto']}"
@@ -165,9 +189,9 @@ def transformar_json_a_parrafos():
                 sube, baja = info["sube_stat"], info["baja_stat"]
                 nombre_en = info.get("nombre_ingles", nombre).replace("-", " ")
                 if sube == "ninguna" and baja == "ninguna":
-                    parrafo = f"La naturaleza {nombre.capitalize()} (en inglés {nombre_en}) es una naturaleza neutra. No aumenta ni disminuye ninguna estadística."
+                    parrafo = f"[CATEGORÍA: NATURALEZA] La naturaleza {nombre.capitalize()} (en inglés {nombre_en}) es neutra. No aumenta ni disminuye ninguna estadística."
                 else:
-                    parrafo = f"La naturaleza {nombre.capitalize()} (en inglés {nombre_en}) modifica las estadísticas incrementando la {sube} y reduciendo la {baja}."
+                    parrafo = f"[CATEGORÍA: NATURALEZA] La naturaleza {nombre.capitalize()} (en inglés {nombre_en}) modifica las estadísticas incrementando la {sube} y reduciendo la {baja}."
                 parrafos_nats.append(parrafo)
             with open("datos/corpus_naturalezas.txt", "w", encoding="utf-8") as f_txt:
                 for p in parrafos_nats: f_txt.write(p + "\n")
@@ -181,7 +205,7 @@ def transformar_json_a_parrafos():
             parrafos_objs = []
             for nombre, info in obj_data.items():
                 nombre_en = info.get("nombre_ingles", nombre).replace("-", " ")
-                parrafo = f"El objeto competitivo para equipar {nombre.capitalize()} (conocido en inglés como {nombre_en}) funciona de la siguiente manera: {info['descripcion']}"
+                parrafo = f"[CATEGORÍA: OBJETO] El objeto competitivo {nombre.capitalize()} (en inglés: {nombre_en}) funciona así: {info['descripcion']}"
                 parrafos_objs.append(parrafo)
             with open("datos/corpus_objetos.txt", "w", encoding="utf-8") as f_txt:
                 for p in parrafos_objs: f_txt.write(p + "\n")
