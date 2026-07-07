@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 # --- IMPORTS DE LANGCHAIN ---
 from langchain_core.tools import tool
 from langchain_groq import ChatGroq
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain_classic.agents.format_scratchpad import format_log_to_str
 from langchain_classic.agents.output_parsers import ReActSingleInputOutputParser
@@ -56,43 +57,36 @@ def cargar_entorno_rag():
     dic_espanol = hunspell.HunSpell('/usr/share/hunspell/es_ES.dic', '/usr/share/hunspell/es_ES.aff')
     modelo_embeddings = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
 
+    # Cargamos token de Hugging Face
     # hf_token = os.environ.get("HF_TOKEN")
     # if not hf_token:
     #     st.error("ERROR: no se ha detectado el token de Hugging Face en el entorno (.env).")
     #     st.stop()
     
-    # Cargamos nueva API Key de Groq
+    # 1. Cargamos tu API Key de Groq
     groq_api_key = os.environ.get("GROQ_API_KEY")
     if not groq_api_key:
         st.error("ERROR: no se ha detectado el GROQ_API_KEY en el entorno (.env).")
         st.stop()
 
+    # 2. MOTOR PRINCIPAL: Groq (Llama 3.1 8B)
     modelo_id = "llama-3.3-70b-versatile"
     #Otros modelos usados:
     # Qwen/Qwen2.5-7B-Instruct
     # mistralai/Mixtral-8x7B-Instruct-v0.1
     # Qwen/Qwen2.5-72B-Instruct
+    # llama-3.3-70b-versatile
+    # gemini-3.5-flash
+    # llama-3.1-8b-instant
 
-    # Usamos el conector oficial de LangChain
-    # llm_generador = ChatOpenAI(
-    #     model=modelo_id,                                     
-    #     base_url="https://api-inference.huggingface.co/v1/", # El túnel
-    #     api_key=hf_token,
-    #     temperature=0.1,
-    #     max_retries=3,
-    #     timeout=180.0,
-    #     max_tokens=1024,
-    #     top_p=0.9
-    # )
-
+    # 3. Inicializamos el motor dejando que gestione sus propias pausas
     llm_generador = ChatGroq(
         model_name=modelo_id,
         api_key=groq_api_key,
         temperature=0.1,
-        max_tokens=1024,
-        max_retries=3,
+        max_retries=6,  # <--- LA CLAVE: Groq pausará 3 segundos automáticamente si va muy rápido
         timeout=180.0,
-        model_kwargs={"top_p": 0.9} # Empaquetamos top_p aquí para limpiar el warning
+        model_kwargs={"top_p": 0.9}
     )
 
     return (vocabulario_oficial, corpus_textos, modelo_tfidf, matriz_tfidf_corpus,
@@ -226,7 +220,7 @@ def herramienta_pokedex(consulta: str) -> str:
     efectos de naturalezas, ataques u objetos para responder al usuario.
     """
     # 1. Usamos TU función original intacta (con top_k=3 para no saturar)
-    documentos_recuperados = buscar_informacion(consulta, top_k=5, alpha=0.6)
+    documentos_recuperados = buscar_informacion(consulta, top_k=3, alpha=0.6)
     
     # 2. Si el buscador no encuentra nada, avisamos al Agente
     if not documentos_recuperados:
@@ -262,8 +256,8 @@ REGLAS:
 Para responder al usuario, DEBES seguir estrictamente este formato de pensamiento paso a paso:
 
 Thought: Siempre debes pensar qué necesitas hacer para responder. ¿Necesitas buscar en la Pokédex?
-Action: La herramienta que vas a usar (debe ser exactamente: herramienta_pokedex).
-Action Input: El texto exacto que vas a buscar (¡Aplica la regla 4 estrictamente!).
+Action: La herramienta a usar (DEBE SER EXACTAMENTE: herramienta_pokedex , todo en minúsculas, sin mayúscula inicial).
+Action Input: ¡OBLIGATORIO USAR CORCHETES! Escribe una etiqueta ([CATEGORÍA: POKÉMON], [CATEGORÍA: MOVIMIENTO], [CATEGORÍA: OBJETO], [CATEGORÍA: TIPO] o [CATEGORÍA: NATURALEZA]) seguida de 1 o 2 palabras clave. (Ejemplo: "[CATEGORÍA: POKÉMON] roca").
 Observation: El resultado que te devuelve la herramienta (Esto aparecerá automáticamente, no lo inventes).
 ... (Este ciclo de Thought/Action/Action Input/Observation se puede repetir si necesitas buscar más cosas)
 
@@ -311,5 +305,6 @@ ejecutor_agente = AgentExecutor(
     agent=agente_pokedex, 
     tools=herramientas_agente, 
     verbose=True, 
-    handle_parsing_errors=True
+    handle_parsing_errors=True,
+    max_iterations=4 # Freno de emergencia contra bucles infinitos
 )

@@ -13,3 +13,4 @@ langchain-huggingface
 langchain-classic
 langchain-openai
 langchain-groq
+langchain-google-genai
