@@ -1,4 +1,5 @@
 import re
+import base64
 import streamlit as st
 from langchain_core.callbacks import BaseCallbackHandler
 from PIL import Image
@@ -7,33 +8,135 @@ from PIL import Image
 from src.motor_rag import ejecutor_agente
 
 # ==========================================
+# FUNCIÓN PARA LEER IMÁGENES LOCALES EN CSS
+# ==========================================
+def obtener_base64(ruta_imagen):
+    try:
+        with open(ruta_imagen, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode()
+    except Exception as e:
+        print(f"No se pudo cargar la imagen de fondo: {e}")
+        return ""
+
+# ==========================================
 # 1. CONFIGURACIÓN VISUAL Y DISEÑO POKÉMON
 # ==========================================
-url_icono_chat = "iconos/icono_chat.png"
+url_icono_chat = "iconos/icono_chat.png"    
 url_icono_user = "iconos/icono_user.png"
+ruta_fondo = "iconos/fondo_limpio.png" 
+ruta_logo = "iconos/logo.png"
 
-st.set_page_config(page_title="PokeTrAIner - RAG", page_icon=url_icono_chat, layout="centered")
+st.set_page_config(page_title="PokeTrAIner - RAG", page_icon=url_icono_chat, layout="wide")
 
-st.markdown("""
+fondo_base64 = obtener_base64(ruta_fondo)
+
+# Quitamos la 'f' inicial y usamos un string normal puro. 
+# Luego reemplazamos la palabra clave con nuestra imagen en base64.
+estilos_css = """
 <style>
-    .stApp { background-color: #FDFEFE; }
-    .stChatInputContainer { border-bottom: 2px solid #3B4CCA; }
-    .stChatInputContainer button { background-color: #FFDE00; color: #3B4CCA; }
-    .stChatMessage.user { background-color: #EBF5FB; border-radius: 10px 10px 0px 10px; }
-    .stChatMessage.assistant { background-color: #FEF9E7; border-radius: 10px 10px 10px 0px; border-left: 5px solid #FFDE00; }
-    h1, h2, h3 { color: #3B4CCA !important; font-family: 'Arial Black', sans-serif; }
+    /* 1. ELIMINAR FRANJAS BLANCAS Y CABECERA */
+    [data-testid="stHeader"] {
+        background-color: transparent !important;
+    }
+    footer {
+        display: none !important;
+    }
+
+    /* 2. FONDO TOTAL: Anclado abajo para proteger los pies de los personajes */
+    .stApp {
+        background-image: url("data:image/png;base64,IMAGEN_FONDO_AQUI");
+        background-size: cover !important;
+        background-position: center bottom !important; 
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+    }
+    
+    [data-testid="stAppViewContainer"] {
+        background-color: transparent !important;
+    }
+
+    /* 🚨 LA SOLUCIÓN: Matamos el fondo blanco asqueroso de la barra de Streamlit 🚨 */
+    [data-testid="stBottom"], 
+    .stChatInputContainer {
+        background-color: transparent !important;
+        background: transparent !important;
+        border: none !important;
+    }
+
+    /* 3. CAJA CENTRAL DEL CHAT */
+    .block-container {
+        max-width: 800px !important; 
+        padding-top: 1rem !important;
+        padding-bottom: 120px !important; 
+        margin-top: 2rem;
+        position: relative; 
+        z-index: 1;
+    }
+
+    /* LA CAJA BLANCA: Ahora es FIJA y llega hasta el suelo absoluto para envolver la barra */
+    .block-container::before {
+        content: "";
+        position: fixed; /* FIJA EN LA PANTALLA */
+        top: 350px; 
+        bottom: 0px; /* Pegada al suelo de la pantalla */
+        left: 0;
+        right: 0;
+        margin: 0 auto; /* La mantiene centrada */
+        max-width: 800px;
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 20px 20px 0px 0px; /* Bordes redondos arriba, rectos abajo */
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
+        z-index: -1; 
+    }
+
+    /* 4. LA BARRA DE ESCRIBIR: Centrada y metida dentro de la caja */
+    [data-testid="stBottom"] {
+        max-width: 800px !important;
+        margin: 0 auto !important; 
+        left: 0; 
+        right: 0;
+        padding-bottom: 30px !important; /* Despegamos la barra del suelo visualmente */
+    }
+    
+    div[data-testid="stChatInput"] {
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 15px;
+        border: 2px solid #3B4CCA !important;
+        box-shadow: 0px -5px 15px rgba(0,0,0,0.1) !important;
+    }
+
+    /* 5. ESTILO DE LOS BOCADILLOS DE CHAT */
+    .stChatMessage.user {
+        background-color: rgba(235, 245, 251, 0.95) !important; 
+        border-radius: 12px 12px 0px 12px;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.05);
+    }
+    .stChatMessage.assistant {
+        background-color: rgba(254, 249, 231, 0.95) !important; 
+        border-radius: 12px 12px 12px 0px; 
+        border-left: 5px solid #FFDE00 !important;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.05);
+    }
+    .stChatMessage p { color: #1A1A1A !important; }
 </style>
-""", unsafe_allow_html=True)
+""".replace("IMAGEN_FONDO_AQUI", fondo_base64)
 
-url_banner = "iconos/banner_f.png"
+st.markdown(estilos_css, unsafe_allow_html=True)
 
-try:
-    st.image(url_banner, width="stretch")
-except Exception as e:
-    st.warning("No se pudo cargar el banner con el enlace.")
+# ==========================================
+# 1.5. CABECERA (LOGO + TEXTO)
+# ==========================================
+col1, col2, col3 = st.columns([1, 4, 1])
+with col2:
+    try:
+        # Usamos width="stretch" para cumplir con las nuevas reglas de Streamlit
+        st.image(ruta_logo, width="stretch")
+    except:
+        pass
 
-st.title("PokéTrAIner: tu asistente táctico")
-st.markdown("Soy tu asistente IA experto en **Pokémon Competitivo**. Analizaré tus preguntas cruzando datos de mi Pokédex.")
+# Añadimos un poco de margen superior (margin-top) para separarlo del logo
+st.markdown("<p style='text-align: center; font-size: 1.5rem; font-weight: 900; color: #3B4CCA; text-shadow: 1px 1px 0px #FFDE00; margin-top: 15px;'>Tu asistente táctico</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-weight: bold; color: #2C3E50; margin-bottom: 20px; padding: 0 20px;'>Soy tu asistente IA experto en Pokémon Competitivo. Analizaré tus preguntas cruzando datos de mi Pokédex.</p>", unsafe_allow_html=True)
 
 # 1. CLASE PARA MEDIR LOS TOKENS EN SEGUNDO PLANO
 class RastreadorTokens(BaseCallbackHandler):
