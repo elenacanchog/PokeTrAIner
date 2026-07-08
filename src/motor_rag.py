@@ -103,7 +103,22 @@ except Exception as e:
 # ==========================================
 # 3. FUNCIONES DE PREPROCESAMIENTO Y BÚSQUEDA
 # ==========================================
+
+# Protege las etiquetas convirtiéndolas en palabras irrompibles
+def proteger_etiquetas(texto):
+    # Usamos regex con IGNORECASE por si el Agente o el texto original mezclan mayúsculas
+    texto = re.sub(r"\[CATEGORÍA:\s*POKÉMON\]", "tagpokemon", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\[CATEGORÍA:\s*OBJETO\]", "tagobjeto", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\[CATEGORÍA:\s*MOVIMIENTO\]", "tagmovimiento", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\[CATEGORÍA:\s*ATAQUE\]", "tagmovimiento", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\[CATEGORÍA:\s*TIPO\]", "tagtipo", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\[CATEGORÍA:\s*NATURALEZA\]", "tagnaturaleza", texto, flags=re.IGNORECASE)
+    return texto
+
 def limpiar_texto_profundo(texto):
+    # Protegemos las etiquetas primero
+    texto = proteger_etiquetas(texto)
+
     texto = re.sub(r"http\S+|www\S+", "", texto)
     texto = re.sub(r"[^a-zA-ZáéíóúüñÑ0-9\s\-']", "", texto).lower()
     tokens = texto.split()
@@ -119,7 +134,17 @@ def corregir_ortografia_mixta(tokens, vocabulario_pokemon):
     lista_sin_tildes = list(vocabulario_sin_tildes.keys())
 
     for token in tokens:
-        if token.isnumeric() or token in vocabulario_pokemon or dic_espanol.spell(token):
+        if token.isnumeric():
+            tokens_corregidos.append(token)
+            continue
+        if token in vocabulario_pokemon:
+            tokens_corregidos.append(token)
+            continue
+        # rotege etiquetas del corrector
+        if token.startswith("tag"): 
+            tokens_corregidos.append(token)
+            continue
+        if dic_espanol.spell(token):
             tokens_corregidos.append(token)
             continue
 
@@ -136,10 +161,14 @@ def corregir_ortografia_mixta(tokens, vocabulario_pokemon):
 def preprocesamiento_profundo(texto, vocabulario):
     texto_limpio = limpiar_texto_profundo(texto)
     doc = nlp(texto_limpio)
-    lemas = [token.lemma_ for token in doc if not token.is_stop and token.lemma_ not in STOPWORDS_EXTRA]
+    # Evita que spaCy borre las etiquetas
+    lemas = [token.lemma_ for token in doc if (not token.is_stop and token.lemma_ not in STOPWORDS_EXTRA) or token.text.startswith("tag")]
     return corregir_ortografia_mixta(lemas, vocabulario)
 
 def preprocesamiento_ligero(texto):
+    # Protegemos las etiquetas
+    texto = proteger_etiquetas(texto)
+
     texto = re.sub(r"http\S+|www\S+", "", texto)
     texto = re.sub(r"[^a-zA-ZáéíóúüñÑ0-9\s\-']", "", texto).lower()
     tokens = texto.split()
@@ -306,5 +335,5 @@ ejecutor_agente = AgentExecutor(
     tools=herramientas_agente, 
     verbose=True, 
     handle_parsing_errors=True,
-    max_iterations=4 # Freno de emergencia contra bucles infinitos
+    max_iterations=8 # Freno de emergencia contra bucles infinitos
 )

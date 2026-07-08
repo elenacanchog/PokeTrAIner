@@ -217,7 +217,24 @@ def transformar_json_a_parrafos():
 # ==============================================================================
 # 4. FUNCIONES DE PREPROCESAMIENTO LINGÜÍSTICO
 # ==============================================================================
+
+def proteger_etiquetas(texto):
+    """
+    Convierte las etiquetas semánticas en tokens sintéticos únicos (irrompibles)
+    antes de que las expresiones regulares o el TF-IDF los destruyan.
+    """
+    texto = re.sub(r"\[CATEGORÍA:\s*POKÉMON\]", "tagpokemon", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\[CATEGORÍA:\s*OBJETO\]", "tagobjeto", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\[CATEGORÍA:\s*MOVIMIENTO\]", "tagmovimiento", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\[CATEGORÍA:\s*ATAQUE\]", "tagmovimiento", texto, flags=re.IGNORECASE) # Alias
+    texto = re.sub(r"\[CATEGORÍA:\s*TIPO\]", "tagtipo", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\[CATEGORÍA:\s*NATURALEZA\]", "tagnaturaleza", texto, flags=re.IGNORECASE)
+    return texto
+
 def limpiar_texto_profundo(texto):
+    # 1. Protegemos las etiquetas primero transformándolas en "tagpokemon", etc.
+    texto = proteger_etiquetas(texto)
+    
     texto = re.sub(r"http\S+|www\S+", "", texto)
     texto = re.sub(r"[^a-zA-ZáéíóúüñÑ0-9\s\-']", "", texto).lower()
     tokens = [JERGA_POKEMON.get(t, t) for t in texto.split()]
@@ -257,10 +274,13 @@ def corregir_ortografia_mixta(tokens, vocabulario_pokemon):
 def preprocesamiento_profundo(texto, vocabulario):
     texto_limpio = limpiar_texto_profundo(texto)
     doc = nlp(texto_limpio)
-    lemas = [token.lemma_ for token in doc if not token.is_stop and token.lemma_ not in STOPWORDS_EXTRA]
+    lemas = [token.lemma_ for token in doc if (not token.is_stop and token.lemma_ not in STOPWORDS_EXTRA) or token.text.startswith("tag")]
     return corregir_ortografia_mixta(lemas, vocabulario)
 
 def preprocesamiento_ligero(texto):
+    # 1. Protegemos las etiquetas también para los embeddings
+    texto = proteger_etiquetas(texto)
+    
     texto = re.sub(r"http\S+|www\S+", "", texto)
     texto = re.sub(r"[^a-zA-ZáéíóúüñÑ0-9\s\-']", "", texto).lower()
     tokens = [JERGA_POKEMON.get(t, t) for t in texto.split()]
