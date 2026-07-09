@@ -55,54 +55,57 @@ estilos_css = """
         background-color: transparent !important;
     }
 
-    /* 🚨 LA SOLUCIÓN: Matamos el fondo blanco asqueroso de la barra de Streamlit 🚨 */
+    /* 🚨 LA SOLUCIÓN: Matamos TODOS los fondos rectangulares invisibles 🚨 */
     [data-testid="stBottom"], 
-    .stChatInputContainer {
+    [data-testid="stBottom"] > div,
+    [data-testid="stBottomBlockContainer"] {
         background-color: transparent !important;
         background: transparent !important;
         border: none !important;
+        box-shadow: none !important;
     }
 
     /* 3. CAJA CENTRAL DEL CHAT */
     .block-container {
         max-width: 800px !important; 
-        padding-top: 1rem !important;
+        padding-top: 0rem !important;
         padding-bottom: 120px !important; 
-        margin-top: 2rem;
+        margin-top: 0rem;
         position: relative; 
         z-index: 1;
     }
 
-    /* LA CAJA BLANCA: Ahora es FIJA y llega hasta el suelo absoluto para envolver la barra */
+    /* LA CAJA BLANCA: Mantenemos tu configuración actual de top/bottom para que no se rompa */
     .block-container::before {
         content: "";
-        position: fixed; /* FIJA EN LA PANTALLA */
-        top: 350px; 
-        bottom: 0px; /* Pegada al suelo de la pantalla */
+        position: fixed; 
+        top: 300px; 
+        bottom: 60px; 
         left: 0;
         right: 0;
-        margin: 0 auto; /* La mantiene centrada */
+        margin: 0 auto; 
         max-width: 800px;
         background-color: rgba(255, 255, 255, 0.85);
-        border-radius: 20px 20px 0px 0px; /* Bordes redondos arriba, rectos abajo */
+        border-radius: 20px 20px 20px 20px; 
         box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
         z-index: -1; 
     }
 
-    /* 4. LA BARRA DE ESCRIBIR: Centrada y metida dentro de la caja */
+    /* 4. LA BARRA DE ESCRIBIR: Centrada */
     [data-testid="stBottom"] {
         max-width: 800px !important;
         margin: 0 auto !important; 
         left: 0; 
         right: 0;
-        padding-bottom: 30px !important; /* Despegamos la barra del suelo visualmente */
+        padding-bottom: 30px !important; 
     }
     
+    /* APLICAMOS EL ESTILO ESTRICTAMENTE A LA CÁPSULA (PILL) */
     div[data-testid="stChatInput"] {
         background-color: rgba(255, 255, 255, 0.95) !important;
-        border-radius: 15px;
-        border: 2px solid #3B4CCA !important;
-        box-shadow: 0px -5px 15px rgba(0,0,0,0.1) !important;
+        border-radius: 15px !important;
+        border: 3px solid #FF8C00 !important; /* Borde Naranja exclusivo */
+        box-shadow: 0px 5px 15px rgba(255, 140, 0, 0.2) !important;
     }
 
     /* 5. ESTILO DE LOS BOCADILLOS DE CHAT */
@@ -126,7 +129,7 @@ st.markdown(estilos_css, unsafe_allow_html=True)
 # ==========================================
 # 1.5. CABECERA (LOGO + TEXTO)
 # ==========================================
-col1, col2, col3 = st.columns([1, 4, 1])
+col1, col2, col3 = st.columns([1, 8, 1]) # Esto es el tamaño del logo
 with col2:
     try:
         # Usamos width="stretch" para cumplir con las nuevas reglas de Streamlit

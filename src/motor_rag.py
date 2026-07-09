@@ -39,7 +39,7 @@ JERGA_POKEMON = {
 # ==========================================
 @st.cache_resource
 def cargar_entorno_rag():
-    st.info("Inicializando sistema experto... (Cargando modelos)")
+    #st.info("Inicializando sistema experto... (Cargando modelos)")
 
     with open("datos/vocabulario_oficial.pkl", "rb") as f:
         vocabulario_oficial = pickle.load(f)
@@ -94,8 +94,10 @@ def cargar_entorno_rag():
 
 # Desempaquetamos para tenerlas como variables globales en este archivo (igual que en Colab)
 try:
-    (vocabulario_oficial, corpus_textos, modelo_tfidf, matriz_tfidf_corpus,
-     matriz_embeddings_corpus, nlp, dic_espanol, modelo_embeddings, llm_generador) = cargar_entorno_rag()
+    # Usamos st.spinner: el mensaje saldrá mientras gira, y desaparecerá en cuanto termine.
+    with st.spinner("Inicializando sistema experto... (Cargando modelos)"):
+        (vocabulario_oficial, corpus_textos, modelo_tfidf, matriz_tfidf_corpus,
+         matriz_embeddings_corpus, nlp, dic_espanol, modelo_embeddings, llm_generador) = cargar_entorno_rag()
 except Exception as e:
     st.error(f"ERROR al cargar el entorno: {e}")
     st.stop()
