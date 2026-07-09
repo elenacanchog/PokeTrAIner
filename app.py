@@ -2,6 +2,7 @@ import re
 import base64
 import streamlit as st
 from langchain_core.callbacks import BaseCallbackHandler
+import streamlit.components.v1 as components
 from PIL import Image
 
 # IMPORTANTE: Importamos únicamente el Agente (él ya tiene las herramientas dentro)
@@ -35,27 +36,54 @@ fondo_base64 = obtener_base64(ruta_fondo)
 estilos_css = """
 <style>
     /* 1. ELIMINAR FRANJAS BLANCAS Y CABECERA */
-    [data-testid="stHeader"] {
-        background-color: transparent !important;
-    }
-    footer {
-        display: none !important;
-    }
+    [data-testid="stHeader"] { display: none !important; }
+    footer { display: none !important; }
 
-    /* 2. FONDO TOTAL: Anclado abajo para proteger los pies de los personajes */
+    /* 2. FONDO TOTAL: Anclado abajo */
     .stApp {
         background-image: url("data:image/png;base64,IMAGEN_FONDO_AQUI");
         background-size: cover !important;
         background-position: center bottom !important; 
-        background-repeat: no-repeat !important;
         background-attachment: fixed !important;
     }
-    
-    [data-testid="stAppViewContainer"] {
-        background-color: transparent !important;
+    [data-testid="stAppViewContainer"] { background-color: transparent !important; }
+
+    /* 3. LA CAJA BLANCA (AHORA ES INDEPENDIENTE DEL TEXTO) */
+    [data-testid="stAppViewContainer"]::before {
+        content: "";
+        position: fixed; 
+        top: 220px; 
+        bottom: 60px;
+        left: 0;
+        right: 0;
+        margin: 0 auto; 
+        width: 100%;
+        max-width: 800px;
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 20px 20px 20px 20px; 
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
+        z-index: 0; 
     }
 
-    /* 🚨 LA SOLUCIÓN: Matamos TODOS los fondos rectangulares invisibles 🚨 */
+    /* 4. LA VENTANA DE MENSAJES (SCROLL) */
+    .block-container {
+        position: fixed !important; 
+        top: 220px !important;
+        bottom: 120px !important; /* El texto se corta justo por encima de la barra de escribir */
+        left: 0 !important;
+        right: 0 !important;
+        margin: 0 auto !important; 
+        width: 100% !important;
+        max-width: 800px !important; 
+        background: transparent !important; /* El fondo lo pone el paso 3 */
+        overflow-y: auto !important; 
+        padding: 20px 60px !important;
+        z-index: 1;
+        scrollbar-width: none; 
+    }
+    .block-container::-webkit-scrollbar { display: none; }
+
+    /* 5. LA BARRA DE ESCRIBIR: Flotando en el hueco de abajo */
     [data-testid="stBottom"], 
     [data-testid="stBottom"] > div,
     [data-testid="stBottomBlockContainer"] {
@@ -63,52 +91,21 @@ estilos_css = """
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
-    }
-
-    /* 3. CAJA CENTRAL DEL CHAT */
-    .block-container {
-        max-width: 800px !important; 
-        padding-top: 0rem !important;
-        padding-bottom: 120px !important; 
-        margin-top: 0rem;
-        position: relative; 
-        z-index: 1;
-    }
-
-    /* LA CAJA BLANCA: Mantenemos tu configuración actual de top/bottom para que no se rompa */
-    .block-container::before {
-        content: "";
-        position: fixed; 
-        top: 300px; 
-        bottom: 60px; 
-        left: 0;
-        right: 0;
-        margin: 0 auto; 
-        max-width: 800px;
-        background-color: rgba(255, 255, 255, 0.85);
-        border-radius: 20px 20px 20px 20px; 
-        box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
-        z-index: -1; 
-    }
-
-    /* 4. LA BARRA DE ESCRIBIR: Centrada */
-    [data-testid="stBottom"] {
         max-width: 800px !important;
-        margin: 0 auto !important; 
-        left: 0; 
-        right: 0;
-        padding-bottom: 30px !important; 
+        left: 0 !important;
+        right: 0 !important;
+        margin: 0 auto !important;
+        padding-bottom: 30px !important; /* Despegada del suelo para que quede dentro de la caja */
     }
     
-    /* APLICAMOS EL ESTILO ESTRICTAMENTE A LA CÁPSULA (PILL) */
     div[data-testid="stChatInput"] {
         background-color: rgba(255, 255, 255, 0.95) !important;
         border-radius: 15px !important;
-        border: 3px solid #FF8C00 !important; /* Borde Naranja exclusivo */
+        border: 3px solid #FF8C00 !important; 
         box-shadow: 0px 5px 15px rgba(255, 140, 0, 0.2) !important;
     }
 
-    /* 5. ESTILO DE LOS BOCADILLOS DE CHAT */
+    /* 6. ESTILOS DE LOS BOCADILLOS */
     .stChatMessage.user {
         background-color: rgba(235, 245, 251, 0.95) !important; 
         border-radius: 12px 12px 0px 12px;
@@ -127,15 +124,18 @@ estilos_css = """
 st.markdown(estilos_css, unsafe_allow_html=True)
 
 # ==========================================
-# 1.5. CABECERA (LOGO + TEXTO)
+# 1.5. CABECERA FIJA (LOGO)
 # ==========================================
-col1, col2, col3 = st.columns([1, 8, 1]) # Esto es el tamaño del logo
-with col2:
-    try:
-        # Usamos width="stretch" para cumplir con las nuevas reglas de Streamlit
-        st.image(ruta_logo, width="stretch")
-    except:
-        pass
+# Convertimos el logo a base64 igual que el fondo
+logo_base64 = obtener_base64(ruta_logo)
+
+# Inyectamos el logo anclado al cielo (position: fixed) para que NUNCA se mueva
+html_cabecera = f"""
+<div style="position: fixed; top: -20px; left: 0; right: 0; margin: 0 auto; width: 100%; max-width: 800px; text-align: center; z-index: 100; pointer-events: none;">
+    <img src="data:image/png;base64,{logo_base64}" style="width: 70%; max-width: 450px; margin-bottom: 5px;">
+</div>
+"""
+st.markdown(html_cabecera, unsafe_allow_html=True)
 
 # Añadimos un poco de margen superior (margin-top) para separarlo del logo
 st.markdown("<p style='text-align: center; font-size: 1.5rem; font-weight: 900; color: #3B4CCA; text-shadow: 1px 1px 0px #FFDE00; margin-top: 15px;'>Tu asistente táctico</p>", unsafe_allow_html=True)
@@ -214,31 +214,41 @@ if prompt_usuario := st.chat_input("¿Qué te interesa saber?"):
                     
                     # CASO A: Límite Diario (TPD) agotado. 
                     if "tokens per day (TPD)" in error_str or "TPD" in error_str:
-                        # Extraemos el tiempo exacto de reseteo de la primera consulta del día anterior
-                        match = re.search(r"Please try again in ([a-zA-Z0-9\.]+)\.", error_str)
-                        tiempo_crudo = match.group(1) if match else "unas horas"
+                        st.warning("¡Uf! He agotado toda mi capacidad táctica por hoy. 😴 \n\nEl Centro Pokémon me está curando. Por favor, vuelve a visitarme **más tarde**.")
                         
-                        # Formateamos el texto para un español natural
-                        tiempo_bonito = re.sub(r'\.\d+s', ' segundos', tiempo_crudo) 
-                        tiempo_bonito = tiempo_bonito.replace('h', ' horas, ').replace('m', ' minutos y ').replace('s', ' segundos')
-                        
-                        st.warning(f"¡Uf! He agotado toda mi energía táctica por hoy. 😴 \n\nPor favor, déjame descansar y vuelve a preguntarme en: **{tiempo_bonito}**.")
-                        
-                    # CASO B: Límite por Minuto (TPM) agotado debido a la acumulación de búsquedas en esta consulta.
+                    # CASO B: Límite por Minuto (TPM) agotado.
                     elif "tokens per minute (TPM)" in error_str or "TPM" in error_str:
-                        # Extraemos el tiempo de espera corto
-                        match = re.search(r"Please try again in ([a-zA-Z0-9\.]+)\.", error_str)
-                        tiempo_crudo = match.group(1) if match else "unos segundos"
-                        
-                        tiempo_bonito = re.sub(r'\.\d+s', ' segundos', tiempo_crudo) 
-                        tiempo_bonito = tiempo_bonito.replace('h', ' horas, ').replace('m', ' minutos y ').replace('s', ' segundos')
-                        
-                        st.warning(f"¡Voy muy rápido! El servidor necesita coger aire un momento por la cantidad de datos cruzados. 💨 \n\nPor favor, vuelve a intentarlo en: **{tiempo_bonito}**.")
+                        st.warning("¡Voy muy rápido! Necesito coger aire un momento por la enorme cantidad de datos que he cruzado. 💨 \n\nPor favor, espera **un par de minutos** y vuelve a intentarlo.")
                     
                     # CASO C: Otros límites desconocidos de la API
                     else:
                         st.warning("¡Uf! Estoy muy cansado de tanto pensar, necesito descansar la mente. 😴 \n\nVuelve a intentarlo en un ratito.")
                         
-                # Si es un error interno del código, LangChain, o límite de iteraciones (Agent stopped...)
+                # Si es un error interno del código, LangChain, o límite de iteraciones
                 else:
-                    st.error(f"Lo siento, el Agente encontró un obstáculo en su razonamiento: {error_str}")
+                    st.error(f"Lo siento, encontré un obstáculo en mi razonamiento: {error_str}")
+
+
+# ==========================================
+# 3. AUTO-SCROLL MÁGICO PARA LA VENTANA
+# ==========================================
+# Si hay mensajes en el chat, inyectamos un script invisible para forzar el scroll
+if len(st.session_state.mensajes) > 0:
+    cantidad_mensajes = len(st.session_state.mensajes)
+    
+    components.html(
+        f"""
+        <script>
+            // Buscamos nuestra caja blanca (block-container) a través del padre del iframe
+            var caja = window.parent.document.querySelector('.block-container');
+            if (caja) {{
+                // La deslizamos suavemente hasta el fondo
+                caja.scrollTo({{
+                    top: caja.scrollHeight,
+                    behavior: 'smooth'
+                }});
+            }}
+        </script>
+        """,
+        height=0 
+    )
