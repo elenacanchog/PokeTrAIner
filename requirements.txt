@@ -1,6 +1,8 @@
-streamlit
+streamlit==1.58.0
+Pillow
 requests
 spacy
+https://github.com/explosion/spacy-models/releases/download/es_core_news_md-3.7.0/es_core_news_md-3.7.0.tar.gz
 hunspell
 scikit-learn
 sentence-transformers
@@ -11,6 +13,4 @@ langchain
 langchain-community
 langchain-huggingface
 langchain-classic
-langchain-openai
 langchain-groq
-langchain-google-genai

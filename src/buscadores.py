@@ -11,6 +11,7 @@ import hunspell
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+from src.utils import preparar_consulta
 
 # ==============================================================================
 # 1. INICIALIZACIÓN DE MOTORES LINGÜÍSTICOS (Globales)
@@ -26,18 +27,7 @@ dic_espanol = hunspell.HunSpell('/usr/share/hunspell/es_ES.dic', '/usr/share/hun
 
 
 # ==============================================================================
-# 2. VARIABLES ESTÁTICAS Y DE JERGA
-# ==============================================================================
-STOPWORDS_EXTRA = {"k", "q", "dimir", "querer", "saber", "ayuda", "hacer", "decir", "poder", "necesitar"}
-
-JERGA_POKEMON = {
-    "atk": "ataque", "spe": "velocidad", "def": "defensa",
-    "spa": "ataque especial", "spd": "defensa especial",
-    "hp": "ps", "ohko": "debilitar"
-}
-
-# ==============================================================================
-# 3. FUNCIONES DE CARGA Y TRANSFORMACIÓN DE DATOS
+# 2. FUNCIONES DE CARGA Y TRANSFORMACIÓN DE DATOS
 # ==============================================================================
 def cargar_vocabulario_real():
     vocabulario = []
@@ -215,89 +205,15 @@ def transformar_json_a_parrafos():
     return documentos_texto
 
 # ==============================================================================
-# 4. FUNCIONES DE PREPROCESAMIENTO LINGÜÍSTICO
+# 3. FUNCIÓN DE TESTEO DE BÚSQUEDA
+# (Nota: Toda la lógica de preprocesamiento de texto se ha movido a src/utils.py)
 # ==============================================================================
-
-def proteger_etiquetas(texto):
-    """
-    Convierte las etiquetas semánticas en tokens sintéticos únicos (irrompibles)
-    antes de que las expresiones regulares o el TF-IDF los destruyan.
-    """
-    texto = re.sub(r"\[CATEGORÍA:\s*POKÉMON\]", "tagpokemon", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"\[CATEGORÍA:\s*OBJETO\]", "tagobjeto", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"\[CATEGORÍA:\s*MOVIMIENTO\]", "tagmovimiento", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"\[CATEGORÍA:\s*ATAQUE\]", "tagmovimiento", texto, flags=re.IGNORECASE) # Alias
-    texto = re.sub(r"\[CATEGORÍA:\s*TIPO\]", "tagtipo", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"\[CATEGORÍA:\s*NATURALEZA\]", "tagnaturaleza", texto, flags=re.IGNORECASE)
-    return texto
-
-def limpiar_texto_profundo(texto):
-    # 1. Protegemos las etiquetas primero transformándolas en "tagpokemon", etc.
-    texto = proteger_etiquetas(texto)
-    
-    texto = re.sub(r"http\S+|www\S+", "", texto)
-    texto = re.sub(r"[^a-zA-ZáéíóúüñÑ0-9\s\-']", "", texto).lower()
-    tokens = [JERGA_POKEMON.get(t, t) for t in texto.split()]
-    return " ".join(tokens)
-
-def quitar_tildes(texto):
-    return ''.join(c for c in unicodedata.normalize('NFD', texto) if unicodedata.category(c) != 'Mn')
-
-def corregir_ortografia_mixta(tokens, vocabulario_pokemon):
-    tokens_corregidos = []
-    vocabulario_sin_tildes = {quitar_tildes(palabra): palabra for palabra in vocabulario_pokemon}
-    lista_sin_tildes = list(vocabulario_sin_tildes.keys())
-
-    for token in tokens:
-        if token.isnumeric():
-            tokens_corregidos.append(token)
-            continue
-        if token in vocabulario_pokemon:
-            tokens_corregidos.append(token)
-            continue
-        if dic_espanol.spell(token):
-            tokens_corregidos.append(token)
-            continue
-
-        token_sin_tilde = quitar_tildes(token)
-        coincidencia_poke = difflib.get_close_matches(token_sin_tilde, lista_sin_tildes, n=1, cutoff=0.75)
-
-        if coincidencia_poke:
-            palabra_real = vocabulario_sin_tildes[coincidencia_poke[0]]
-            tokens_corregidos.append(palabra_real)
-        else:
-            sugerencias_es = dic_espanol.suggest(token)
-            if sugerencias_es: tokens_corregidos.append(sugerencias_es[0].lower())
-            else: tokens_corregidos.append(token)
-    return tokens_corregidos
-
-def preprocesamiento_profundo(texto, vocabulario):
-    texto_limpio = limpiar_texto_profundo(texto)
-    doc = nlp(texto_limpio)
-    lemas = [token.lemma_ for token in doc if (not token.is_stop and token.lemma_ not in STOPWORDS_EXTRA) or token.text.startswith("tag")]
-    return corregir_ortografia_mixta(lemas, vocabulario)
-
-def preprocesamiento_ligero(texto):
-    # 1. Protegemos las etiquetas también para los embeddings
-    texto = proteger_etiquetas(texto)
-    
-    texto = re.sub(r"http\S+|www\S+", "", texto)
-    texto = re.sub(r"[^a-zA-ZáéíóúüñÑ0-9\s\-']", "", texto).lower()
-    tokens = [JERGA_POKEMON.get(t, t) for t in texto.split()]
-    return " ".join(tokens)
-
-def preparar_consulta(texto_usuario, vocabulario):
-    return {
-        "original": texto_usuario,
-        "tf_idf": preprocesamiento_profundo(texto_usuario, vocabulario),
-        "embeddings": preprocesamiento_ligero(texto_usuario)
-    }
 
 def buscar_informacion_test(texto_usuario, modelo_tfidf, matriz_tfidf, modelo_embeddings, matriz_embeddings, corpus_textos, vocabulario, top_k=5, alpha=0.3):
     """
     Versión aislada del buscador solo para usarla en los tests del bloque main.
     """
-    consulta_preparada = preparar_consulta(texto_usuario, vocabulario)
+    consulta_preparada = preparar_consulta(texto_usuario, vocabulario, nlp, dic_espanol)
     texto_tfidf = " ".join(consulta_preparada["tf_idf"])
     texto_embeddings = consulta_preparada["embeddings"]
 
@@ -321,7 +237,7 @@ def buscar_informacion_test(texto_usuario, modelo_tfidf, matriz_tfidf, modelo_em
     return resultados
 
 # ==============================================================================
-# 5. BLOQUE PRINCIPAL (Se ejecuta al hacer `python src/2_crear_buscadores.py`)
+# 4. BLOQUE PRINCIPAL (Se ejecuta con `python src/buscadores.py`)
 # ==============================================================================
 if __name__ == "__main__":
     

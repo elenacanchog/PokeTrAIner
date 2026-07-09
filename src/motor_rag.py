@@ -21,21 +21,14 @@ from langchain_classic.agents.format_scratchpad import format_log_to_str
 from langchain_classic.agents.output_parsers import ReActSingleInputOutputParser
 from langchain_classic.tools.render import render_text_description
 from langchain_classic.agents import AgentExecutor
+from src.utils import preparar_consulta
 
 # Cargar variables de entorno locales
 load_dotenv()
 
-# ==========================================
-# 1. VARIABLES ESTÁTICAS Y DE JERGA
-# ==========================================
-STOPWORDS_EXTRA = {"k", "q", "dimir", "querer", "saber", "ayuda", "hacer", "decir", "poder", "necesitar"}
-JERGA_POKEMON = {
-    "atk": "ataque", "spe": "velocidad", "def": "defensa",
-    "spa": "ataque especial", "spd": "defensa especial", "hp": "ps", "ohko": "debilitar"
-}
 
 # ==========================================
-# 2. CARGA DEL ENTORNO (Caché de Streamlit)
+# 1. CARGA DEL ENTORNO (Caché de Streamlit)
 # ==========================================
 @st.cache_resource
 def cargar_entorno_rag():
@@ -56,20 +49,14 @@ def cargar_entorno_rag():
     nlp = spacy.load("es_core_news_md")
     dic_espanol = hunspell.HunSpell('/usr/share/hunspell/es_ES.dic', '/usr/share/hunspell/es_ES.aff')
     modelo_embeddings = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
-
-    # Cargamos token de Hugging Face
-    # hf_token = os.environ.get("HF_TOKEN")
-    # if not hf_token:
-    #     st.error("ERROR: no se ha detectado el token de Hugging Face en el entorno (.env).")
-    #     st.stop()
     
-    # 1. Cargamos tu API Key de Groq
+    # 1. Cargamos API Key de Groq
     groq_api_key = os.environ.get("GROQ_API_KEY")
     if not groq_api_key:
         st.error("ERROR: no se ha detectado el GROQ_API_KEY en el entorno (.env).")
         st.stop()
 
-    # 2. MOTOR PRINCIPAL: Groq (Llama 3.1 8B)
+    # 2. MOTOR PRINCIPAL: Groq
     modelo_id = "llama-3.3-70b-versatile"
     #Otros modelos usados:
     # Qwen/Qwen2.5-7B-Instruct
@@ -84,7 +71,7 @@ def cargar_entorno_rag():
         model_name=modelo_id,
         api_key=groq_api_key,
         temperature=0.1,
-        max_retries=6,  # <--- LA CLAVE: Groq pausará 3 segundos automáticamente si va muy rápido
+        max_retries=6,  # Groq pausará 3 segundos automáticamente si va muy rápido
         timeout=180.0,
         model_kwargs={"top_p": 0.9}
     )
@@ -92,7 +79,7 @@ def cargar_entorno_rag():
     return (vocabulario_oficial, corpus_textos, modelo_tfidf, matriz_tfidf_corpus,
             matriz_embeddings_corpus, nlp, dic_espanol, modelo_embeddings, llm_generador)
 
-# Desempaquetamos para tenerlas como variables globales en este archivo (igual que en Colab)
+# Desempaquetamos para tenerlas como variables globales en este archivo
 try:
     # Usamos st.spinner: el mensaje saldrá mientras gira, y desaparecerá en cuanto termine.
     with st.spinner("Inicializando sistema experto... (Cargando modelos)"):
@@ -103,89 +90,12 @@ except Exception as e:
     st.stop()
 
 # ==========================================
-# 3. FUNCIONES DE PREPROCESAMIENTO Y BÚSQUEDA
+# 2. FUNCIÓN DE BÚSQUEDA 
+# (Nota: Las funciones de preprocesamiento y limpieza están en src/utils.py)
 # ==========================================
 
-# Protege las etiquetas convirtiéndolas en palabras irrompibles
-def proteger_etiquetas(texto):
-    # Usamos regex con IGNORECASE por si el Agente o el texto original mezclan mayúsculas
-    texto = re.sub(r"\[CATEGORÍA:\s*POKÉMON\]", "tagpokemon", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"\[CATEGORÍA:\s*OBJETO\]", "tagobjeto", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"\[CATEGORÍA:\s*MOVIMIENTO\]", "tagmovimiento", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"\[CATEGORÍA:\s*ATAQUE\]", "tagmovimiento", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"\[CATEGORÍA:\s*TIPO\]", "tagtipo", texto, flags=re.IGNORECASE)
-    texto = re.sub(r"\[CATEGORÍA:\s*NATURALEZA\]", "tagnaturaleza", texto, flags=re.IGNORECASE)
-    return texto
-
-def limpiar_texto_profundo(texto):
-    # Protegemos las etiquetas primero
-    texto = proteger_etiquetas(texto)
-
-    texto = re.sub(r"http\S+|www\S+", "", texto)
-    texto = re.sub(r"[^a-zA-ZáéíóúüñÑ0-9\s\-']", "", texto).lower()
-    tokens = texto.split()
-    tokens_sin_jerga = [JERGA_POKEMON.get(t, t) for t in tokens]
-    return " ".join(tokens_sin_jerga)
-
-def quitar_tildes(texto):
-    return ''.join(c for c in unicodedata.normalize('NFD', texto) if unicodedata.category(c) != 'Mn')
-
-def corregir_ortografia_mixta(tokens, vocabulario_pokemon):
-    tokens_corregidos = []
-    vocabulario_sin_tildes = {quitar_tildes(palabra): palabra for palabra in vocabulario_pokemon}
-    lista_sin_tildes = list(vocabulario_sin_tildes.keys())
-
-    for token in tokens:
-        if token.isnumeric():
-            tokens_corregidos.append(token)
-            continue
-        if token in vocabulario_pokemon:
-            tokens_corregidos.append(token)
-            continue
-        # rotege etiquetas del corrector
-        if token.startswith("tag"): 
-            tokens_corregidos.append(token)
-            continue
-        if dic_espanol.spell(token):
-            tokens_corregidos.append(token)
-            continue
-
-        token_sin_tilde = quitar_tildes(token)
-        coincidencia_poke = difflib.get_close_matches(token_sin_tilde, lista_sin_tildes, n=1, cutoff=0.75)
-
-        if coincidencia_poke:
-            tokens_corregidos.append(vocabulario_sin_tildes[coincidencia_poke[0]])
-        else:
-            sugerencias_es = dic_espanol.suggest(token)
-            tokens_corregidos.append(sugerencias_es[0].lower() if sugerencias_es else token)
-    return tokens_corregidos
-
-def preprocesamiento_profundo(texto, vocabulario):
-    texto_limpio = limpiar_texto_profundo(texto)
-    doc = nlp(texto_limpio)
-    # Evita que spaCy borre las etiquetas
-    lemas = [token.lemma_ for token in doc if (not token.is_stop and token.lemma_ not in STOPWORDS_EXTRA) or token.text.startswith("tag")]
-    return corregir_ortografia_mixta(lemas, vocabulario)
-
-def preprocesamiento_ligero(texto):
-    # Protegemos las etiquetas
-    texto = proteger_etiquetas(texto)
-
-    texto = re.sub(r"http\S+|www\S+", "", texto)
-    texto = re.sub(r"[^a-zA-ZáéíóúüñÑ0-9\s\-']", "", texto).lower()
-    tokens = texto.split()
-    tokens_sin_jerga = [JERGA_POKEMON.get(t, t) for t in tokens]
-    return " ".join(tokens_sin_jerga)
-
-def preparar_consulta(texto_usuario, vocabulario):
-    return {
-        "original": texto_usuario,
-        "tf_idf": preprocesamiento_profundo(texto_usuario, vocabulario),
-        "embeddings": preprocesamiento_ligero(texto_usuario)
-    }
-
 def buscar_informacion(texto_usuario, top_k=5, alpha=0.5):
-    consulta_preparada = preparar_consulta(texto_usuario, vocabulario_oficial)
+    consulta_preparada = preparar_consulta(texto_usuario, vocabulario_oficial, nlp, dic_espanol)
     texto_tfidf = " ".join(consulta_preparada["tf_idf"])
     texto_embeddings = consulta_preparada["embeddings"]
 
@@ -203,44 +113,9 @@ def buscar_informacion(texto_usuario, top_k=5, alpha=0.5):
         resultados.append({"texto": corpus_textos[idx]})
     return resultados
 
-def construir_prompt(pregunta, contexto):
-    # La caja del sistema: SOLO TUS REGLAS PURAS
-    instrucciones_sistema = """Eres 'PokéTrAIner', el mejor profesor de combates Pokémon del mundo.
-Tienes permiso absoluto para hablar sobre mecánicas de videojuegos, objetos, ataques y estrategias.
-
-TU MISIÓN:
-Responder a la pregunta del usuario de forma clara, entusiasta y útil, basándote principalmente en la información del [CONTEXTO RECOPILADO].
-
-REGLAS:
-1. ADÁPTATE A LA PREGUNTA:
-   - Si preguntan por un OBJETO, ATAQUE o TIPO, lee el [CONTEXTO RECOPILADO] y explica exactamente lo que dice ahí.
-   - Si piden una ESTRATEGIA, cruza las estadísticas del [CONTEXTO RECOPILADO] con tu conocimiento oficial.
-2. PROHIBIDO INVENTAR DATOS:
-   - Si recomiendas una Naturaleza, asegúrate de recordar exactamente qué sube y qué baja. Si no estás 100% seguro, no lo menciones.
-   - Si el usuario te pregunta "quién usa un ataque" o "dónde se consigue",
-   y esa información NO está en el [CONTEXTO RECOPILADO], debes decir explícitamente:
-   "No dispongo de esa información en mis registros actuales." No intentes adivinar juegos ni Pokémon.
-3. SÉ HONESTO: si te preguntan por crossovers (como Zelda) o cosas ajenas a Pokémon competitivo, indica que solo puedes hablar de Pokémon.
-"""
-
-    # La caja del usuario: EL CONTEXTO Y LA PREGUNTA
-    mensaje_usuario = f"""[CONTEXTO RECOPILADO]
-{contexto}
-
-PREGUNTA DEL USUARIO: {pregunta}"""
-
-    # Las dos cajas separadas y ordenadas
-    mensajes = [
-        {"role": "system", "content": instrucciones_sistema},
-        {"role": "user", "content": mensaje_usuario}
-    ]
-
-    return mensajes
-
-
 
 # ==========================================
-# HERRAMIENTAS DEL AGENTE (LANGCHAIN)
+# 3. HERRAMIENTAS DEL AGENTE (LANGCHAIN)
 # ==========================================
 
 @tool
@@ -250,7 +125,7 @@ def herramienta_pokedex(consulta: str) -> str:
     Úsala SIEMPRE que necesites buscar estadísticas, debilidades, tipos, 
     efectos de naturalezas, ataques u objetos para responder al usuario.
     """
-    # 1. Usamos TU función original intacta (con top_k=3 para no saturar)
+    # 1. Usamos la función original intacta (con top_k=3 para no saturar)
     documentos_recuperados = buscar_informacion(consulta, top_k=3, alpha=0.6)
     
     # 2. Si el buscador no encuentra nada, avisamos al Agente
@@ -263,10 +138,10 @@ def herramienta_pokedex(consulta: str) -> str:
 
 
 # ==========================================
-# 7. INICIALIZACIÓN DEL AGENTE REACT
+# 4. INICIALIZACIÓN DEL AGENTE REACT
 # ==========================================
 
-# 1. Metemos tu herramienta en la lista de herramientas disponibles para el agente
+# 1. Metemos la herramienta en la lista de herramientas disponibles para el agente
 herramientas_agente = [herramienta_pokedex]
 
 # 2. Definimos el Prompt del sistema con el formato estricto ReAct
@@ -308,7 +183,7 @@ Empieza a pensar ahora:
 
 prompt_agente = PromptTemplate.from_template(plantilla_react)
 
-# 3. Rellenamos el prompt con la descripción automática de tu herramienta
+# 3. Rellenamos el prompt con la descripción automática de la herramienta
 prompt_agente = prompt_agente.partial(
     tools=render_text_description(herramientas_agente),
     tool_names=", ".join([t.name for t in herramientas_agente]),
