@@ -6,7 +6,7 @@ A diferencia de un LLM tradicional que puede "alucinar" o inventar reglas de los
 
 ---
 
-## ⚙️ ¿Cómo funciona bajo el capó? La Arquitectura del Proyecto
+## ⚙️ ¿Cómo funciona? La Arquitectura del Proyecto
 
 El flujo de trabajo de PokéTrAIner está diseñado en varias capas para garantizar precisión en los datos y fluidez conversacional:
 
