@@ -15,7 +15,6 @@ from dotenv import load_dotenv
 # --- IMPORTS DE LANGCHAIN ---
 from langchain_core.tools import tool
 from langchain_groq import ChatGroq
-from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain_classic.agents.format_scratchpad import format_log_to_str
 from langchain_classic.agents.output_parsers import ReActSingleInputOutputParser
