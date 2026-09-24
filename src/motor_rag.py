@@ -56,7 +56,7 @@ def cargar_entorno_rag():
         st.stop()
 
     # 2. MOTOR PRINCIPAL: Groq
-    modelo_id = "llama-3.3-70b-versatile"
+    modelo_id = "llama-3.1-70b-versatile"
     #Otros modelos usados:
     # Qwen/Qwen2.5-7B-Instruct
     # mistralai/Mixtral-8x7B-Instruct-v0.1
